@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Book } from "../types/BookProps";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { Card, CardText, CardTitle } from "react-bootstrap";
 
 const BookDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -14,35 +15,56 @@ const BookDetail: React.FC = () => {
                 setBook(response.data);
             })
             .catch(error => {
-                if (error.response.status === 404) 
-                { 
-                    setBookIsInLibrary(false);
-                }
+                if (error.response.status === 404) setBookIsInLibrary(false);
                 else console.error('Error fetching book:', error);
-                
             });
     }, []);
-    
+
     if (bookIsInLibrary === false) {
         return (
-            <div>
-                <h1>
-                    There is no such book in our library.
-                </h1>
-                <h2><Link to={'/'}>Back to the list of books</Link></h2>
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <div className="d-flex flex-column align-items-center">
+                    <div>
+                        <h1>
+                            There is no such book in our library.
+                        </h1>
+                    </div>
+                    <div>
+                        <h2>
+                            <Link to={'/'}>Back to the list of books</Link>
+                        </h2>
+                    </div>
+                </div>
             </div>
         );
     }
 
     if (!book) {
         return (
-            <div>
+            <div className="d-flex justify-content-center align-items-center vh-100">
                 <h1>Loading...</h1>
             </div>
         )
     }
 
-    return <h1> Book id: {id} {book?.title} </h1>
+    return (
+        <div className="d-flex align-items-center justify-content-center vh-100">
+            <Card className="align-items-center justify-content-center p-3 pb-0 w-25">
+                <Card.Body>
+                    <CardTitle>
+                        <span className="h1">«{book.title}»</span>
+                    </CardTitle>
+                    <CardText>
+                        <p className="h4">by {book.author}</p>
+                        <p><span className="fw-bold">Description:</span> {book.overview}</p>
+                        <p><span className="fw-bold">Language(s):</span> {book.language}</p>
+                        <p><span className="fw-bold">Copies In Stock:</span> {book.copiesInStock}</p>
+                        <p><span className="fw-bold">Total Copies:</span> {book.totalCopies}</p>
+                    </CardText>
+                </Card.Body>
+            </Card>
+        </div>
+    )
 }
 
 export default BookDetail;
