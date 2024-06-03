@@ -3,6 +3,7 @@ import { Book } from "../types/BookProps";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { Card, CardText, CardTitle } from "react-bootstrap";
+import LoadingSpinner from "./LoadingSpinner";
 
 const BookDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -41,9 +42,7 @@ const BookDetail: React.FC = () => {
 
     if (!book) {
         return (
-            <div className="d-flex justify-content-center align-items-center vh-100">
-                <h1>Loading...</h1>
-            </div>
+            <LoadingSpinner></LoadingSpinner>
         )
     }
 
