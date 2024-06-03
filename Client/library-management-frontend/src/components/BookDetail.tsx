@@ -49,20 +49,27 @@ const BookDetail: React.FC = () => {
 
     return (
         <div className="d-flex align-items-center justify-content-center vh-100">
-            <Card className="align-items-center justify-content-center p-3 pb-0 w-25">
-                <Card.Body>
-                    <CardTitle>
-                        <span className="h1">«{book.title}»</span>
-                    </CardTitle>
-                    <CardText>
-                        <p className="h4">by {book.author}</p>
-                        <p><span className="fw-bold">Description:</span> {book.overview}</p>
-                        <p><span className="fw-bold">Language(s):</span> {book.language}</p>
-                        <p><span className="fw-bold">Copies In Stock:</span> {book.copiesInStock}</p>
-                        <p><span className="fw-bold">Total Copies:</span> {book.totalCopies}</p>
-                    </CardText>
-                </Card.Body>
-            </Card>
+            <div className="d-flex align-items-center flex-column">
+                <Card className="p-3 pb-0 w-25">
+                    <Card.Body>
+                        <CardTitle>
+                            <span className="h1">«{book.title}»</span>
+                        </CardTitle>
+                        <CardText>
+                            <p className="h4">by {book.author}</p>
+                            <p><span className="fw-bold">Description:</span> {book.overview}</p>
+                            <p><span className="fw-bold">Language(s):</span> {book.language}</p>
+                            <p><span className="fw-bold">Copies In Stock:</span> {book.copiesInStock}</p>
+                            <p><span className="fw-bold">Total Copies:</span> {book.totalCopies}</p>
+                        </CardText>
+                    </Card.Body>
+                </Card>
+                <h2 className="pt-3">
+                    <a href="/" className="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                        Back to the list of books
+                    </a>
+                </h2>
+            </div>
         </div>
     )
 }
