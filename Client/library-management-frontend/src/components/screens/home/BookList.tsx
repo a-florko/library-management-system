@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Book } from "../types/BookProps";
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
-import LoadingSpinner from "./LoadingSpinner";
+import { Col, Container, Row } from 'react-bootstrap';
+import { Book } from "../../../types/BookProps";
+import LoadingSpinner from "../../ui/LoadingSpinner";
 
 const BookList: React.FC = () => {
     const [books, setBooks] = useState<Book[] | null>(null);
