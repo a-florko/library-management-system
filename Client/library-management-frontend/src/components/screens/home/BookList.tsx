@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import React from "react";
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from 'react-bootstrap';
 import { Book } from "../../../types/BookProps";
 import LoadingSpinner from "../../ui/LoadingSpinner";
 
-const BookList: React.FC = () => {
-    const [books, setBooks] = useState<Book[] | null>(null);
-    const [serverError, setServerError] = useState<boolean>(false);
+interface BookListProps {
+    books: Book[] | null;
+    serverError: boolean;
+}
 
-    useEffect(() => {
-        axios.get<Book[]>('https://localhost:7233/api/books')
-            .then(response => {
-                setBooks(response.data);
-            })
-            .catch(error => {
-                if (error.code === "ERR_NETWORK") {
-                    setServerError(true);
-                }
-                console.error('Error fetching books:', error);
-            });
-    }, []);
-
+const BookList: React.FC<BookListProps> = ({ books, serverError }) => {
     if (serverError) {
         return (
             <div className="d-flex justify-content-center align-items-center vh-100">
@@ -44,21 +32,19 @@ const BookList: React.FC = () => {
     }
 
     return (
-        <Container className="ps-5 pt-5 mw-100">
-            <Row>
-                <Col className="h1 mt-0">
-                    All books
-                </Col>
-            </Row>
-            <Row>
-                <Col className="col-4">
-                    {books.map(book => (
-                        <div key={book.id} className="border rounded bg-light h3 py-2 ps-3 m-0">
+        <Container className="px-5 pt-5">
+            <div className="h1 pb-3 text-center">
+                All books
+            </div>
+            {books.map(book => (
+                <Row className="mb-3" key={book.id}>
+                    <Col className="col-12" >
+                        <div className="border rounded bg-light h3 py-2 ps-3 m-0 text-center">
                             <Link to={`/books/${book.id}`}>{book.title}</Link> by {book.author}
                         </div>
-                    ))}
-                </Col>
-            </Row>
+                    </Col>
+                </Row>
+            ))}
         </Container>
     )
 }
