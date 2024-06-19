@@ -1,16 +1,20 @@
 import { Navbar } from "react-bootstrap";
-import Button from "react-bootstrap/Button"
+import "./TopPanel.css";
+
 
 interface TopPanelProps {
-    onAddBook: () => void;
+    toggleModal: () => void;
 }
 
-const TopPanel: React.FC<TopPanelProps> = ({ onAddBook }) => {
+const TopPanel: React.FC<TopPanelProps> = ({ toggleModal }) => {
     return (
-        <Navbar bg="light" expand="lg">
-            <div className="ml-auto d-flex">
-                <Button variant="outline-dark" className="mr-2" onClick={onAddBook}>Add Book</Button>
-            </div>
+        <Navbar expand="lg" bg="dark" data-bs-theme="light" className="d-flex justify-content-around">
+            <Navbar.Brand className="text-white ms-1 px-2 pointer-mouse navbar-item">
+                <p className="h3">Signed in as: Librarian, Adam Frost</p>
+            </Navbar.Brand>
+            <Navbar.Text className="text-white me-2 px-2 pointer-mouse navbar-item" onClick={toggleModal}>
+                <p className="h4">Add Book</p>
+            </Navbar.Text>
         </Navbar>
     )
 }
