@@ -7,3 +7,5 @@ export interface Book {
     copiesInStock: number,
     totalCopies: number
 }
+
+export interface BookData extends Omit<Book, 'id'> {}
