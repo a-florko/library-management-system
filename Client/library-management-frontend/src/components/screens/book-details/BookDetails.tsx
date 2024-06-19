@@ -4,6 +4,7 @@ import axios from "axios";
 import { Card, CardText, CardTitle } from "react-bootstrap";
 import { Book } from "../../../types/BookProps";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import  "./BooDetails.css";
 
 const BookDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -28,7 +29,7 @@ const BookDetail: React.FC = () => {
                 <div className="d-flex flex-column align-items-center">
                     <div>
                         <h1>
-                            There is no such book in our library.
+                            There is no such book in our library
                         </h1>
                     </div>
                     <div>
@@ -49,14 +50,14 @@ const BookDetail: React.FC = () => {
 
     return (
         <div className="d-flex align-items-center justify-content-center vh-100">
-            <div className="d-flex align-items-center flex-column">
-                <Card className="p-3 pb-0 w-25">
+            <div className="d-flex align-items-center flex-column w-50">
+                <Card className="p-3 pb-0 modal-w60">
                     <Card.Body>
                         <CardTitle>
-                            <span className="h1">«{book.title}»</span>
+                            <p className="h1 text-center">«{book.title}»</p>
                         </CardTitle>
                         <CardText>
-                            <p className="h4">by {book.author}</p>
+                            <p className="h4 pb-2 text-center">by {book.author}</p>
                             <p><span className="fw-bold">Description:</span> {book.overview}</p>
                             <p><span className="fw-bold">Language(s):</span> {book.language}</p>
                             <p><span className="fw-bold">Copies In Stock:</span> {book.copiesInStock}</p>
