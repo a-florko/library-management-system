@@ -6,32 +6,16 @@ import LoadingSpinner from "../../ui/LoadingSpinner";
 
 interface BookListProps {
     books: Book[] | null;
-    serverError: boolean;
 }
 
-const BookList: React.FC<BookListProps> = ({ books, serverError }) => {
-    if (serverError) {
-        return (
-            <div className="d-flex justify-content-center align-items-center vh-100">
-                <div className="d-flex flex-column align-items-center border rounded px-5 py-4 bg-light">
-                    <h1 className="text-danger">
-                        There was an error with the server :(
-                    </h1>
-                    <h3 className="pt-3">
-                        Try reloading the page or try again later
-                    </h3>
-                </div>
-            </div>
-        )
-    }
-
+const BookList: React.FC<BookListProps> = ({ books }) => {
     if (!books) {
         return (
             <LoadingSpinner></LoadingSpinner>
         )
     }
 
-    return (
+    return (    
         <Container className="px-5 pt-5">
             <div className="h1 pb-3 text-center">
                 All books

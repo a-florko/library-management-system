@@ -4,12 +4,15 @@ import './index.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Router from './components/Router';
+import { GlobalStateProvider } from './context/GlobalStateContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <Router />
-  </React.StrictMode>
+  <GlobalStateProvider>
+    <React.StrictMode>
+      <Router />
+    </React.StrictMode>
+  </GlobalStateProvider>
 );

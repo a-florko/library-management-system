@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import { Card, CardText, CardTitle } from "react-bootstrap";
 import { Book } from "../../../types/BookProps";
 import LoadingSpinner from "../../ui/LoadingSpinner";
-import  "./BooDetails.css";
+import "./BooDetails.css";
+import { BookService } from "../../../services/book.service";
 
 const BookDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -12,16 +12,14 @@ const BookDetail: React.FC = () => {
     const [bookIsInLibrary, setBookIsInLibrary] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
-        axios.get<Book>(`https://localhost:7233/api/books/${id}`)
-            .then(response => {
-                setBook(response.data);
-                setBookIsInLibrary(true);
-            })
-            .catch(error => {
-                if (error.response.status === 404) setBookIsInLibrary(false);
-                else console.error('Error fetching book:', error);
-            });
-    }, [id]);
+        const fetchBook = async () => {
+            if (id) {
+                const response = await BookService.getById(+id, setBookIsInLibrary);
+                setBook(response);
+            }
+        }
+        fetchBook();
+    }, [setBookIsInLibrary, id]);
 
     if (bookIsInLibrary === false) {
         return (
