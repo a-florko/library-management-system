@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BookList from "./BookList";
 import AddBookModal from "../../ui/AddBookModal";
 import { Book } from "../../../types/BookProps";
-import TopPanel from "../../ui/TopPanel";
+import TopPanel from "../../ui/top-panel/TopPanel";
 import { BookService } from "../../../services/book.service";
 import { useGlobalState } from "../../../context/GlobalStateContext";
 import ServerDown from "../../ui/ServerDown";
