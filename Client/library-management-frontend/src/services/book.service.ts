@@ -1,10 +1,12 @@
 import axios from "axios";
-import { Book } from "../types/BookProps";
+import { Book, BookData } from "../types/BookProps";
+
+const API_URL = "https://localhost:7233/api/books";
 
 export const BookService = {
     async getAll(setServerDown: (error: boolean) => void): Promise<Book[] | null> {
         try {
-            const response = await axios.get<Book[]>('https://localhost:7233/api/books')
+            const response = await axios.get<Book[]>(API_URL)
             return response.data;
         } catch (error: any) {
             if (error.code === "ERR_NETWORK") {
@@ -17,7 +19,7 @@ export const BookService = {
 
     async getById(id: number, setBookIsInLibrary: (error: boolean) => void): Promise<Book | null> {
         try {
-            const response = await axios.get<Book>(`https://localhost:7233/api/books/${id}`)
+            const response = await axios.get<Book>(`${API_URL}/${id}`)
             setBookIsInLibrary(true);
             return response.data;
         } catch (error: any) {
@@ -25,5 +27,15 @@ export const BookService = {
             else console.error('Error fetching book:', error);
             return null;
         }
+    },
+
+    async create(bookToAdd: BookData): Promise<Book | null> {
+        try {
+            const response = await axios.post(API_URL, bookToAdd);
+            return response.data;
+        } catch (error: any) {
+            console.error('Error adding book:', error);
+            return null;
+        };
     }
 }
