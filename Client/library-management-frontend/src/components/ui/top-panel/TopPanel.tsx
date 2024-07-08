@@ -1,20 +1,29 @@
-import { Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import "./TopPanel.css";
-
+import { useAuth } from "../../../hooks/useAuth";
 
 interface TopPanelProps {
     toggleModal: () => void;
 }
 
 const TopPanel: React.FC<TopPanelProps> = ({ toggleModal }) => {
+    const { fullName, logOut } = useAuth();
+
     return (
-        <Navbar expand="lg" bg="dark" data-bs-theme="light" className="d-flex justify-content-around">
-            <Navbar.Brand className="text-white ms-1 px-2 pointer-mouse navbar-item">
-                <p className="h3">Signed in as: Librarian, Adam Frost</p>
-            </Navbar.Brand>
-            <Navbar.Text className="text-white me-2 px-2 pointer-mouse navbar-item" onClick={toggleModal}>
-                <p className="h4">Add Book</p>
-            </Navbar.Text>
+        <Navbar expand="lg" bg="dark" data-bs-theme="light">
+            <Container>
+                <Navbar.Brand className="text-white ms-4 px-2 pointer-mouse navbar-item">
+                    <span className="h3">Signed in as: Librarian, {fullName}</span>
+                </Navbar.Brand>
+                <Nav className="ms-auto me-4">
+                    <Navbar.Text className="text-white px-2 me-4 pointer-mouse navbar-item" onClick={toggleModal}>
+                        <span className="h4">Add Book</span>
+                    </Navbar.Text>
+                    <Navbar.Text className="text-white px-2 pointer-mouse navbar-item" onClick={logOut}>
+                        <span className="h4">Log Out</span>
+                    </Navbar.Text>
+                </Nav>
+            </Container>
         </Navbar>
     )
 }
