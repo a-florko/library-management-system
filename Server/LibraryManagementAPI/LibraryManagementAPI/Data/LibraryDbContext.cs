@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using LibraryManagementAPI.Models;
+﻿using LibraryManagementAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace LibraryManagementAPI.Data;
 
@@ -18,6 +15,7 @@ public partial class LibraryDbContext : DbContext
     }
 
     public virtual DbSet<Book> Books { get; set; }
+    public virtual DbSet<Librarian> Librarians { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,12 +29,42 @@ public partial class LibraryDbContext : DbContext
 
             entity.ToTable("book");
 
-            entity.Property(e => e.Author).HasMaxLength(100);
-            entity.Property(e => e.CopiesInStock).HasColumnName("Copies_in_stock");
-            entity.Property(e => e.Language).HasMaxLength(50);
-            entity.Property(e => e.Overview).HasMaxLength(1800);
-            entity.Property(e => e.Title).HasMaxLength(100);
-            entity.Property(e => e.TotalCopies).HasColumnName("Total_copies");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Author)
+                .HasMaxLength(100)
+                .HasColumnName("author");
+            entity.Property(e => e.CopiesInStock).HasColumnName("copies_in_stock");
+            entity.Property(e => e.Language)
+                .HasMaxLength(50)
+                .HasColumnName("language");
+            entity.Property(e => e.Overview)
+                .HasMaxLength(1800)
+                .HasColumnName("overview");
+            entity.Property(e => e.Title)
+                .HasMaxLength(100)
+                .HasColumnName("title");
+            entity.Property(e => e.TotalCopies).HasColumnName("total_copies");
+        });
+
+        modelBuilder.Entity<Librarian>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("librarian");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(50)
+                .HasColumnName("first_name");
+            entity.Property(e => e.LastName)
+                .HasMaxLength(50)
+                .HasColumnName("last_name");
+            entity.Property(e => e.Login)
+                .HasMaxLength(150)
+                .HasColumnName("login");
+            entity.Property(e => e.Password)
+                .HasMaxLength(150)
+                .HasColumnName("password");
         });
 
         OnModelCreatingPartial(modelBuilder);
