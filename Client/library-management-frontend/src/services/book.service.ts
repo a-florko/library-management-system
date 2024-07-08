@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Book, BookData } from "../types/BookProps";
 
-const API_URL = "https://localhost:7233/api/books";
+const API_URL = `${process.env.REACT_APP_API_URL}/books`;
 
 export const BookService = {
     async getAll(setServerDown: (error: boolean) => void): Promise<Book[] | null> {
