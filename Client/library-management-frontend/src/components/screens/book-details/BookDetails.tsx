@@ -24,7 +24,7 @@ const BookDetail: React.FC = () => {
     if (bookIsInLibrary === false) {
         return (
             <div className="d-flex justify-content-center align-items-center vh-100">
-                <div className="d-flex flex-column align-items-center">
+                <div className="d-flex flex-column align-items-center text-center">
                     <div>
                         <h1>
                             There is no such book in our library

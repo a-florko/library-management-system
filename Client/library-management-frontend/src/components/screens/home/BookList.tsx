@@ -17,7 +17,7 @@ const BookList: React.FC<BookListProps> = ({ books }) => {
 
     return (    
         <Container className="px-5 pt-5">
-            <div className="h1 pb-3 text-center">
+            <div className="h1 text-center">
                 All books
             </div>
             {books.map(book => (
