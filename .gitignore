@@ -27,3 +27,4 @@ bld/
 *.azurePubxml
 *.pubxml
 *.publishproj
+Client/library-management-frontend/.env
