@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { BookData } from "../../types/BookProps";
+import { Book, BookData } from "../../types/BookProps";
 import useNotification from "../../hooks/useNotification";
 import { BookService } from "../../services/book.service";
 import NotificationBox from "./notification-box/NotificationBox";
 
 interface AddBookModalProps {
     showModal: boolean;
+    onBookAdd: (newBook: Book) => void;
     toggleModal: () => void;
 }
 
@@ -19,7 +20,7 @@ const initialBookData: BookData = {
     totalCopies: 0
 };
 
-const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, toggleModal }) => {
+const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, onBookAdd, toggleModal }) => {
     const [bookToAdd, setBookToAdd] = useState<BookData>(initialBookData);
     const { visible, mainText, subText, showNotification } = useNotification();
 
@@ -28,6 +29,7 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, toggleModal }) =
             const addedBook = await BookService.create(bookToAdd);
             if (addedBook) {
                 toggleModal();
+                onBookAdd(addedBook);
                 setBookToAdd(initialBookData);
             }
             else showNotification("Failed to add book", "Please try again later", 5000)

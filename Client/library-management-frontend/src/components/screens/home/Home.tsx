@@ -9,16 +9,20 @@ import ServerDown from "../../ui/ServerDown";
 
 const Home: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
-    const [books, setBooks] = useState<Book[] | null>(null);
+    const [books, setBooks] = useState<Book[]>([]);
     const { serverDown, setServerDown } = useGlobalState();
 
     useEffect(() => {
         const fetchBooks = async () => {
             const response = await BookService.getAll(setServerDown);
-            setBooks(response);
+            if (response) setBooks(response);
         }
         fetchBooks();
     }, [setServerDown]);
+
+    const handleAddBook = (newBook: Book) => {
+        setBooks(prevBooks => [...prevBooks, newBook])
+    }
 
     const toggleModal = () => setShowModal(!showModal);
 
@@ -30,7 +34,7 @@ const Home: React.FC = () => {
                 <TopPanel toggleModal={toggleModal}></TopPanel>
             )}
             <BookList books={books} />
-            <AddBookModal showModal={showModal} toggleModal={toggleModal} />
+            <AddBookModal showModal={showModal} onBookAdd={handleAddBook} toggleModal={toggleModal} />
         </>
     )
 }
