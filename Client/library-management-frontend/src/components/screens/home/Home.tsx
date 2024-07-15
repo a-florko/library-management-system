@@ -1,42 +1,51 @@
 import React, { useEffect, useState } from "react";
 import BookList from "./BookList";
-import AddBookModal from "../../ui/AddBookModal";
+import AddBookModal from "../../ui/modals/AddBookModal";
 import { Book } from "../../../types/BookProps";
 import TopPanel from "../../ui/top-panel/TopPanel";
-import { BookService } from "../../../services/book.service";
-import { useGlobalState } from "../../../context/GlobalStateContext";
+import { useServerState } from "../../../context/SeverStateContext";
 import ServerDown from "../../ui/ServerDown";
+import IssueBookModal from "../../ui/modals/IssueBookModal";
+import { BooksProvider, useBooks } from "../../../context/BooksContext";
 
 const Home: React.FC = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [books, setBooks] = useState<Book[]>([]);
-    const { serverDown, setServerDown } = useGlobalState();
+    const [showAddBookModal, setShowAddBookModal] = useState(false);
+    const [showIssueBookModal, setShowsetIssueBookModal] = useState(false);
 
-    useEffect(() => {
-        const fetchBooks = async () => {
-            const response = await BookService.getAll(setServerDown);
-            if (response) setBooks(response);
-        }
-        fetchBooks();
-    }, [setServerDown]);
+    const { books, setBooks } = useBooks();
+    const { serverDown } = useServerState();        
 
     const handleAddBook = (newBook: Book) => {
         setBooks(prevBooks => [...prevBooks, newBook])
     }
 
-    const toggleModal = () => setShowModal(!showModal);
+    const handleBookIssue = (bookTitle: string) => {
+        console.log("onBookIssue Call");
+    }
+
+    const toggleAddBookModal = () => setShowAddBookModal(!showAddBookModal);
+    const toggleIssueBookModal = () => setShowsetIssueBookModal(!showIssueBookModal);
 
     if (serverDown) return <ServerDown />
 
     return (
         <>
             {books && (
-                <TopPanel toggleModal={toggleModal}></TopPanel>
+                <TopPanel toggleAddBookModal={toggleAddBookModal} toggleIssueBookModal={toggleIssueBookModal}></TopPanel>
             )}
             <BookList books={books} />
-            <AddBookModal showModal={showModal} onBookAdd={handleAddBook} toggleModal={toggleModal} />
+            <AddBookModal showModal={showAddBookModal} onBookAdd={handleAddBook} toggleModal={toggleAddBookModal} />
+            <IssueBookModal showModal={showIssueBookModal} onBookIssue={handleBookIssue} toggleModal={toggleIssueBookModal}></IssueBookModal>
         </>
     )
 }
 
-export default Home;
+const HomeWrapper: React.FC = () => {
+    return (
+        <BooksProvider>
+            <Home />    
+        </BooksProvider>
+    )
+}
+
+export default HomeWrapper;
