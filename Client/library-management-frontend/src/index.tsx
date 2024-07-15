@@ -4,7 +4,7 @@ import './index.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Router from './components/Router';
-import { GlobalStateProvider } from './context/GlobalStateContext';
+import { ServerStateProvider } from './context/SeverStateContext';
 import { AuthProvider } from './context/AuthContext';
 
 const root = ReactDOM.createRoot(
@@ -12,10 +12,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <AuthProvider>
-    <GlobalStateProvider>
+    <ServerStateProvider>
       <React.StrictMode>
         <Router />
       </React.StrictMode>
-    </GlobalStateProvider>
+    </ServerStateProvider>
   </AuthProvider>
 );
