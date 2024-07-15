@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { Book, BookData } from "../../types/BookProps";
-import useNotification from "../../hooks/useNotification";
-import { BookService } from "../../services/book.service";
-import NotificationBox from "./notification-box/NotificationBox";
+import useNotification from "../../../hooks/useNotification";
+import { BookService } from "../../../services/book.service";
+import { Book, BookData } from "../../../types/BookProps";
+import NotificationBox from "../notification-box/NotificationBox";
 
 interface AddBookModalProps {
     showModal: boolean;
