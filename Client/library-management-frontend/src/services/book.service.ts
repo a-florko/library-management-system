@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Book, BookData } from "../types/BookProps";
+import { IssueBookData } from "../types/IssueBookProps";
 
 const API_URL = `${process.env.REACT_APP_API_URL}/books`;
 
@@ -36,6 +37,17 @@ export const BookService = {
         } catch (error: any) {
             console.error('Error adding book:', error);
             return null;
+        };
+    },
+
+    async issue(issueBookData: IssueBookData): Promise<true | false> {
+        try {
+            const response = await axios.post(`${API_URL}/issue-book`, issueBookData);
+            if (response.status === 200) return true
+            else return false;
+        } catch (error: any) {
+            console.error('Error adding book:', error);
+            return false;
         };
     }
 }

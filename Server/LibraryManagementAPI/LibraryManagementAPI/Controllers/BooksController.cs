@@ -68,6 +68,14 @@ namespace LibraryManagementAPI.Controllers
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
 
+        [HttpPost]
+        [Route("issue-book")]
+        public async Task<ActionResult<bool>> IssueBook(IssueBookDto issueBookDto)
+        {
+            Console.WriteLine(issueBookDto.ReturnBefore);
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(uint id)
         {
