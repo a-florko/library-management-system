@@ -1,4 +1,6 @@
 using LibraryManagementAPI.Data;
+using LibraryManagementAPI.Services.Contracts;
+using LibraryManagementAPI.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -12,14 +14,22 @@ internal class Program
         builder.Services.AddDbContext<LibraryDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-        // Add services to the container.
-
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddTransient<ILibrarianService, LibrarianService>();
+        builder.Services.AddTransient<IBorrowerService, BorrowerService>();
+
         var app = builder.Build();
+
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var dataContext = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+            dataContext.Database.Migrate();
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
