@@ -1,7 +1,7 @@
 export interface IssueBookData {
-    bookTitle: string,
-    fullReaderName: string,
-    issuedBy: string,
+    bookId: number,
+    borrowerId: number,
+    issuedById: number,
     issueDate: string,
     returnBefore: string,
     notes: string
