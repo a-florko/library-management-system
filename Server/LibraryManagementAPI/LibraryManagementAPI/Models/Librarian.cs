@@ -2,7 +2,7 @@
 
 public partial class Librarian
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public required string FirstName { get; set; }
 
@@ -11,4 +11,6 @@ public partial class Librarian
     public required string Login { get; set; }
 
     public required string Password { get; set; }
+
+    public virtual ICollection<IssuedBook> IssuedBooks { get; set; } = [];
 }

@@ -2,13 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using LibraryManagementAPI.Data;
 using LibraryManagementAPI.Models;
+using LibraryManagementAPI.Services.Contracts;
 
 namespace LibraryManagementAPI.Controllers
 {
     [Route("api/books")]
     [ApiController]
-    public class BooksController(LibraryDbContext context) : ControllerBase
+    public class BooksController(LibraryDbContext context, ILibrarianService librarianService, IBorrowerService borrowerService) : ControllerBase
     {
+        private readonly ILibrarianService _librarianService = librarianService;
+        private readonly IBorrowerService _borrowerService = borrowerService;
         private readonly LibraryDbContext _context = context;
 
         [HttpGet]
@@ -18,7 +21,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(uint id)
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await _context.Books.FindAsync(id);
 
@@ -31,7 +34,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(uint id, Book book)
+        public async Task<IActionResult> PutBook(int id, Book book)
         {
             if (id != book.Id)
             {
@@ -70,14 +73,35 @@ namespace LibraryManagementAPI.Controllers
 
         [HttpPost]
         [Route("issue-book")]
-        public async Task<ActionResult<bool>> IssueBook(IssueBookDto issueBookDto)
+        public async Task<IActionResult> IssueBook(IssueBookDto issueBookDto)
         {
-            Console.WriteLine(issueBookDto.ReturnBefore);
+            if (!BookInStock(issueBookDto.BookId)) return Conflict("This book is out of stock");
+            if (!_librarianService.ExistById(issueBookDto.IssuedById)) return NotFound("Librarian not found");
+            if (!_borrowerService.ExistById(issueBookDto.BorrowerId)) return NotFound("Borrower not found");
+
+            IssuedBook issuedBook = new()
+            {
+               BookId = issueBookDto.BookId,
+               BorrowerId = issueBookDto.BorrowerId,
+               LibrarianId = issueBookDto.IssuedById,
+               IssueDate = issueBookDto.IssueDate,
+               ReturnBefore = issueBookDto.ReturnBefore,
+               Notes = issueBookDto.Notes,
+            };
+
+            _context.IssuedBooks.Add(issuedBook);
+
+            var book = _context.Books.FirstOrDefault(b => b.Id == issueBookDto.BookId);
+
+            book!.CopiesInStock -= 1;
+
+            await _context.SaveChangesAsync();
+
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBook(uint id)
+        public async Task<IActionResult> DeleteBook(int id)
         {
             var book = await _context.Books.FindAsync(id);
             if (book == null)
@@ -91,9 +115,16 @@ namespace LibraryManagementAPI.Controllers
             return NoContent();
         }
 
-        private bool BookExists(uint id)
+        private bool BookExists(int id)
         {
             return _context.Books.Any(e => e.Id == id);
+        }
+
+        private bool BookInStock(int bookId)
+        {
+            Book? book = _context.Books.FirstOrDefault(b => b.Id == bookId);
+            if (book == null) return false;
+            else return book.TotalCopies > 0;
         }
     }
 }
