@@ -55,11 +55,19 @@ const BookDetail: React.FC = () => {
                             <p className="h1 text-center">«{book.title}»</p>
                         </CardTitle>
                         <CardText>
-                            <p className="h4 pb-2 text-center">by {book.author}</p>
-                            <p><span className="fw-bold">Description:</span> {book.overview}</p>
-                            <p><span className="fw-bold">Language(s):</span> {book.language}</p>
-                            <p><span className="fw-bold">Copies In Stock:</span> {book.copiesInStock}</p>
-                            <p><span className="fw-bold">Total Copies:</span> {book.totalCopies}</p>
+                            <span className="h4 pb-2 text-center">by {book.author}</span>
+                        </CardText>
+                        <CardText>
+                            <span className="fw-bold">Description:</span> {book.overview}
+                        </CardText>
+                        <CardText>
+                            <span className="fw-bold">Language(s):</span> {book.language}
+                        </CardText>
+                        <CardText>
+                            <span className="fw-bold">Copies In Stock:</span> {book.copiesInStock}
+                        </CardText>
+                        <CardText>
+                            <span className="fw-bold">Total Copies:</span> {book.totalCopies}
                         </CardText>
                     </Card.Body>
                 </Card>
