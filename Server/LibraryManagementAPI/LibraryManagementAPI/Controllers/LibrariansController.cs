@@ -2,37 +2,37 @@
 using Microsoft.EntityFrameworkCore;
 using LibraryManagementAPI.Data;
 using LibraryManagementAPI.Models;
-using Microsoft.AspNet.Identity;
+using LibraryManagementAPI.Services.Contracts;
+using Microsoft.AspNetCore.Identity;
 
 namespace LibraryManagementAPI.Controllers
 {
     [Route("api/librarians")]
     [ApiController]
-    public class LibrariansController(LibraryDbContext context) : ControllerBase
+    public class LibrariansController(LibraryDbContext context, ILibrarianService librarianService) : ControllerBase
     {
         private readonly LibraryDbContext _context = context;
-        private readonly PasswordHasher _passwordHasher = new();
+        private readonly ILibrarianService _librarianService = librarianService;
+        private readonly PasswordHasher<string> _passwordHasher = new();
 
         [HttpPost("try-to-log-in")]
         public async Task<IActionResult> TryToLogIn(LogInDto logInDto)
         {
             Librarian? librarian = _context.Librarians.SingleOrDefault(l => l.Login == logInDto.Login);
-            if (librarian != null)
-            {
-                PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(librarian.Password, logInDto.Password);
-                if (result == PasswordVerificationResult.Failed) return Unauthorized();
-                else if (result == PasswordVerificationResult.SuccessRehashNeeded)
-                { 
-                    RehashPassword(librarian);
-                }
-                return Ok(new { fullName = $"{librarian.FirstName} {librarian.LastName}" });
+            if (librarian == null) return Unauthorized("Invalid credentials");
 
+            PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(librarian.LastName, librarian.Password, logInDto.Password);
+
+            if (result == PasswordVerificationResult.Failed) return Unauthorized("Invalid credentials");
+            else if (result == PasswordVerificationResult.SuccessRehashNeeded)
+            { 
+                RehashPassword(librarian);
             }
-            return NotFound();
+            return Ok(new { id = librarian.Id , fullName = $"{librarian.FirstName} {librarian.LastName}" });
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLibrarian(uint id, Librarian librarian)
+        public async Task<IActionResult> PutLibrarian(int id, Librarian librarian)
         {
             if (id != librarian.Id)
             {
@@ -47,7 +47,7 @@ namespace LibraryManagementAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LibrarianExists(id))
+                if (!_librarianService.ExistById(id))
                 {
                     return NotFound();
                 }
@@ -63,7 +63,7 @@ namespace LibraryManagementAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Librarian>> PostLibrarian(Librarian librarian)
         {
-            librarian.Password = _passwordHasher.HashPassword(librarian.Password);
+            librarian.Password = _passwordHasher.HashPassword(librarian.LastName, librarian.Password);
             _context.Librarians.Add(librarian);
             await _context.SaveChangesAsync();
 
@@ -71,7 +71,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLibrarian(uint id)
+        public async Task<IActionResult> DeleteLibrarian(int id)
         {
             var librarian = await _context.Librarians.FindAsync(id);
             if (librarian == null)
@@ -85,17 +85,11 @@ namespace LibraryManagementAPI.Controllers
             return NoContent();
         }
 
-        private bool LibrarianExists(uint id)
-        {
-            return _context.Librarians.Any(e => e.Id == id);
-        }
-
         private async void RehashPassword(Librarian librarian)
         {
-            string newPassword = _passwordHasher.HashPassword(librarian.Password);
+            string newPassword = _passwordHasher.HashPassword(librarian.LastName, librarian.Password);
             librarian.Password = newPassword;
             await PutLibrarian(librarian.Id, librarian);
         }
-
     }
 }
