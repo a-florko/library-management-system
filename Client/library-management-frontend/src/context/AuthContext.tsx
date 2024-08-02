@@ -4,6 +4,7 @@ import { AuthService } from "../services/auth.service";
 interface AuthContextProps {
     isAuthenticated: boolean;
     fullName: string;
+    id: string;
     logIn: (credentials: { login: string, password: string }, rememberMe: boolean) => Promise<void>;
     logOut: () => void;
 }
@@ -13,16 +14,19 @@ export const AuthContext = createContext<AuthContextProps | undefined>(undefined
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(localStorage.getItem('isAuthenticated') === 'true');
     const [fullName, setFullName] = useState<string>(localStorage.getItem('fullName') || "");
+    const [id, setId] = useState<string>(localStorage.getItem('id') || "");
     
     const logIn = async (credentials: {login: string, password: string}, rememberMe: boolean) => {
         const result = await AuthService.logIn(credentials);
 
         if (result !== null) {
-            setFullName(result);
+            setFullName(result.fullName);
+            setId(result.id);
             setIsAuthenticated(true);
 
             if(rememberMe) {
-                localStorage.setItem('fullName', result);
+                localStorage.setItem('fullName', result.fullName);
+                localStorage.setItem('id', result.id);
                 localStorage.setItem('isAuthenticated', 'true');
             }
         } 
@@ -39,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, fullName, logIn, logOut }}>
+        <AuthContext.Provider value={{ isAuthenticated, fullName, id, logIn, logOut }}>
             {children}
         </AuthContext.Provider>
     )
