@@ -2,26 +2,25 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Card, CardText, CardTitle } from "react-bootstrap";
 import { Book } from "../../../types/BookProps";
-import LoadingSpinner from "../../ui/LoadingSpinner";
 import "./BooDetails.css";
-import { BookService } from "../../../services/book.service";
+import { BooksProvider, useBooks } from "../../../context/BooksContext";
 
-const BookDetail: React.FC = () => {
+const BookDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [book, setBook] = useState<Book | null>(null);
-    const [bookIsInLibrary, setBookIsInLibrary] = useState<boolean | undefined>(undefined);
+    const [book, setBook] = useState<Book | undefined>();
+    const { books } = useBooks();
 
     useEffect(() => {
         const fetchBook = async () => {
             if (id) {
-                const response = await BookService.getById(+id, setBookIsInLibrary);
-                setBook(response);
+                const result = books.find((b) => b.id === +id);
+                setBook(result);
             }
         }
         fetchBook();
-    }, [setBookIsInLibrary, id]);
+    }, [books, id]);
 
-    if (bookIsInLibrary === false) {
+    if (book === undefined) {
         return (
             <div className="d-flex justify-content-center align-items-center vh-100">
                 <div className="d-flex flex-column align-items-center text-center">
@@ -38,12 +37,6 @@ const BookDetail: React.FC = () => {
                 </div>
             </div>
         );
-    }
-
-    if (!book) {
-        return (
-            <LoadingSpinner></LoadingSpinner>
-        )
     }
 
     return (
@@ -72,13 +65,21 @@ const BookDetail: React.FC = () => {
                     </Card.Body>
                 </Card>
                 <h2 className="pt-3">
-                    <a href="/" className="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                    <Link to={"/"} className="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                         Back to the list of books
-                    </a>
+                    </Link>
                 </h2>
             </div>
         </div>
     )
 }
 
-export default BookDetail;
+const BookDetailsWrapper: React.FC = () => {
+    return (
+        <BooksProvider>
+            <BookDetails />
+        </BooksProvider>
+    )
+}
+
+export default BookDetailsWrapper;

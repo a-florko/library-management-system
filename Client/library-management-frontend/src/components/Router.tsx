@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import BookDetail from './screens/book-details/BookDetails';
+import BookDetails from './screens/book-details/BookDetails';
 import Home from './screens/home/Home';
 import NotFound from './screens/not-found/NotFound';
 import LogIn from './screens/log-in/LogIn';
@@ -17,7 +17,7 @@ const Router = () => {
                 } />
                 <Route path='/books/:id' element={
                     <ProtectedRoute>
-                        <BookDetail />
+                        <BookDetails />
                     </ProtectedRoute>
                 } />
                 <Route path='*' element={<NotFound />} />
