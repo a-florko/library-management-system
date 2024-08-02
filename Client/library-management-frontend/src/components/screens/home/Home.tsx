@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BookList from "./BookList";
 import AddBookModal from "../../ui/modals/AddBookModal";
 import { Book } from "../../../types/BookProps";
@@ -13,15 +13,15 @@ const Home: React.FC = () => {
     const [showIssueBookModal, setShowsetIssueBookModal] = useState(false);
 
     const { books, setBooks } = useBooks();
-    const { serverDown } = useServerState();        
+    const { serverDown } = useServerState();
 
     const handleAddBook = (newBook: Book) => {
         setBooks(prevBooks => [...prevBooks, newBook])
     }
 
-    const handleBookIssue = (bookTitle: string) => {
-        console.log("onBookIssue Call");
-    }
+    const handleBookIssue = (bookId: number) => {
+        const updatedBooks = books.map(b => b.id === bookId ? { ...b, copiesInStock: b.copiesInStock - 1 } : b)
+    };
 
     const toggleAddBookModal = () => setShowAddBookModal(!showAddBookModal);
     const toggleIssueBookModal = () => setShowsetIssueBookModal(!showIssueBookModal);
@@ -43,7 +43,7 @@ const Home: React.FC = () => {
 const HomeWrapper: React.FC = () => {
     return (
         <BooksProvider>
-            <Home />    
+            <Home />
         </BooksProvider>
     )
 }
