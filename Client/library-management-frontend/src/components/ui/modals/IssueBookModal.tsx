@@ -1,24 +1,27 @@
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Spinner } from "react-bootstrap";
 import NotificationBox from "../notification-box/NotificationBox";
 import useNotification from "../../../hooks/useNotification";
 import { BookService } from "../../../services/book.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import { IssueBookData } from "../../../types/IssueBookProps";
 import { useBooks } from "../../../context/BooksContext";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Typeahead } from "react-bootstrap-typeahead";
+import { BorrowerService } from "../../../services/borrower.service";
+import { BorrowerDto } from "../../../types/BorrowerProps";
+import AddNewBorrowerModal from "./AddNewBorrowerModal";
 
 interface IssueBookModalProps {
     showModal: boolean;
-    onBookIssue: (bookTitle: string) => void;
+    onBookIssue: (bookId: number) => void;
     toggleModal: () => void;
 }
 
 const initialIssueBookData: IssueBookData = {
-    bookTitle: "",
-    fullReaderName: "",
-    issuedBy: "",
+    bookId: -1,
+    borrowerId: -1,
+    issuedById: -1,
     issueDate: "",
     returnBefore: "",
     notes: "",
@@ -27,68 +30,149 @@ const initialIssueBookData: IssueBookData = {
 const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue, toggleModal }) => {
     const [issueBookData, setIssueBookData] = useState<IssueBookData>(initialIssueBookData);
     const { visible, mainText, subText, showNotification } = useNotification();
-    const { fullName } = useAuth();
+    const { id } = useAuth();
     const { books } = useBooks();
-    const [selectedBookValidation, setBookSelectionValidation] = useState<boolean>(true);
+    const [bookSelectionValidation, setBookSelectionValidation] = useState<boolean>(true);
 
-    const handleIssue = async (e: React.FormEvent) => {
+    const [borrowerType, setBorrowerType] = useState<'new' | 'existing' | 'not set'>('not set');
+    const [borrowersOptions, setBorrowersOptions] = useState<BorrowerDto[]>([]);
+    const [isLoadingBorrowers, setIsLoadingBorrowers] = useState<boolean>(false);
+
+    const [shouldSubmit, setShouldSubmit] = useState<boolean>(false);
+
+    const [showNewBorrowerModal, setShowNewBorrowerModal] = useState(false);
+
+    const toggleAddNewBorrowerModal = async () => {
+        setShowNewBorrowerModal(!showNewBorrowerModal)
+        if (borrowerType === 'new') {
+            toggleModal();
+            setBorrowerType('not set');
+        }
+    };
+
+    useEffect(() => {
+        const issueBook = async () => {
+            if (shouldSubmit) {
+                try {
+                    const resultIssuingBook = await BookService.issue(issueBookData);
+                    if (resultIssuingBook) {
+                        toggleModal();
+                        onBookIssue(issueBookData.bookId);
+                        setIssueBookData(initialIssueBookData);
+                    } else {
+                        showNotification("Failed to issue book", "Please try again later", 5000);
+                    }
+                } catch {
+                    showNotification("Failed to issue book", "Please try again later", 5000);
+                } finally {
+                    setShouldSubmit(false);
+                }
+            }
+        };
+
+        issueBook();
+    }, [shouldSubmit, issueBookData, onBookIssue, showNotification, toggleModal]);
+
+    const handleIssue = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const isBookSelected = books.some(e => e.title === issueBookData.bookTitle);
-        setBookSelectionValidation(isBookSelected);
+        if (!bookSelectionValidation) return;
 
-        if (!isBookSelected) return;
+        setIssueBookData(prev => ({ ...prev, issuedById: +id }));
+        setShouldSubmit(true);
+    };
 
-        try {
-            setIssueBookData(prev => ({ ...prev, issuedBy: fullName }));
-            const resultIssuingBook = await BookService.issue(issueBookData);
-            if (resultIssuingBook) {
-                toggleModal();
-                onBookIssue(issueBookData.bookTitle);
-                setIssueBookData(initialIssueBookData);
-            }
-            else showNotification("Failed to issue book", "Please try again later", 5000)
-        } catch {
-            showNotification("Failed to issue book", "Please try again later", 5000)
+    const handleBorrowerTypeChange = async (newBorrowerType: 'new' | 'existing') => {
+        setBorrowerType(newBorrowerType);
+        if (newBorrowerType === 'new') {
+            toggleModal();
+            toggleAddNewBorrowerModal();
         }
+        else if (newBorrowerType === 'existing') {
+            setIsLoadingBorrowers(true);
+            try {
+                const borrowersFullNames = await BorrowerService.getDtoBorrowers();
+                if (borrowersFullNames) setBorrowersOptions(borrowersFullNames)
+
+            } catch {
+                showNotification("Unable to obtain registered borrowers", "Please try again later", 5000)
+            }
+            finally {
+                setIsLoadingBorrowers(false);
+            }
+        }
+    }
+
+    const handleBookSelection = (selectedBook: string) => {
+        const result = books.find(b => (b.title === selectedBook));
+        if (result === undefined) return setBookSelectionValidation(false);
+        setIssueBookData(prev => ({
+            ...prev, bookId: result.id
+        }))
+        return setBookSelectionValidation(true);
     }
 
     return (
         <>
+            <AddNewBorrowerModal showModal={showNewBorrowerModal} toggleModal={toggleAddNewBorrowerModal} />
             <NotificationBox visible={visible} mainText={mainText} subText={subText} />
             <Modal show={showModal} onHide={toggleModal}>
                 <Modal.Header closeButton>
                     <span className="h1 m-0">Issue Book</span>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleIssue}>
+                    <Form>
                         <Form.Group className="mb-3">
                             <Typeahead
                                 id="book-select"
                                 onChange={(selected) => {
-                                    setIssueBookData(prev => ({
-                                        ...prev, bookTitle: String(selected)
-                                    }))
-                                }}  
+                                    handleBookSelection(String(selected))
+                                }
+                                }
                                 options={books.map(book => (
                                     book.title
                                 ))}
                                 placeholder="Book"
-                                isInvalid={!selectedBookValidation}
+                                isInvalid={!bookSelectionValidation}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Control
-                                required
-                                type="text"
-                                placeholder="Full Reader Name"
-                                name="fullReaderName"
-                                value={issueBookData.fullReaderName}
-                                onChange={e => setIssueBookData(prev => ({
-                                    ...prev, fullReaderName: e.target.value
-                                }))}>
-                            </Form.Control>
+                        <Form.Group>
+                            <Form.Label className="h6 ms-1">Borrower</Form.Label>
+                            <div className="ms-1 mb-2">
+                                <Form.Check
+                                    type="radio"
+                                    label="Add New"
+                                    value='new'
+                                    checked={borrowerType === 'new'}
+                                    onChange={e => handleBorrowerTypeChange(e.target.value as 'new' | 'existing')}
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    label="Issue to an existing"
+                                    value='existing'
+                                    checked={borrowerType === 'existing'}
+                                    onChange={e => handleBorrowerTypeChange(e.target.value as 'new' | 'existing')}
+                                />
+                            </div>
                         </Form.Group>
+                        {borrowerType === 'existing' && (
+                            <Form.Group className="mb-3">
+                                {isLoadingBorrowers ? (
+                                    <Spinner animation="border"></Spinner>
+                                ) : (
+                                    <Typeahead
+                                        id="borrower-select"
+                                        onChange={(selected) => {
+                                            setIssueBookData(prev => ({
+                                                ...prev, borrowerId: borrowersOptions.find((borrower) => String(selected) === borrower.fullName)!.id
+                                            }))
+                                        }}
+                                        options={borrowersOptions.map(borrower => borrower.fullName)}
+                                        placeholder="Borrower"
+                                    />
+                                )}
+                            </Form.Group>
+                        )}
                         <Form.Group className="mb-3">
                             <Form.Label className="h6 ms-1">Issue Date</Form.Label>
                             <Form.Control
@@ -128,7 +212,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue,
                         </Form.Group>
                         <hr className="mx-0 px-0" />
                         <Form.Group className="mb-3 d-flex align-items-center justify-content-center">
-                            <Button type="submit" variant="btn btn-outline-dark" size="lg">
+                            <Button type="button" onClick={handleIssue} variant="btn btn-outline-dark" size="lg">
                                 Submit
                             </Button>
                         </Form.Group>
