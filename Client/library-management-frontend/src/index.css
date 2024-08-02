@@ -8,7 +8,6 @@ body {
   background: linear-gradient(to right, #b490c7, #cd9f3f);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.pointer-mouse {
+  cursor: pointer;
 }
