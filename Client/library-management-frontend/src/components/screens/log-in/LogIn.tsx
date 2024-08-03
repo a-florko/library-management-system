@@ -6,6 +6,8 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Icon } from 'react-icons-kit';
 import { eyeOff } from 'react-icons-kit/feather/eyeOff';
 import { eye } from 'react-icons-kit/feather/eye'
+import { useServerState } from "../../../context/SeverStateContext";
+import ServerDown from "../../ui/ServerDown";
 
 const LogIn: React.FC = () => {
     const [credentials, setCredentials] = useState({ login: '', password: '' });
@@ -16,6 +18,8 @@ const LogIn: React.FC = () => {
     const [icon, setIcon] = useState(eyeOff);
 
     const [error, setError] = useState("")
+
+    const { serverDown } = useServerState();
 
     const navigate = useNavigate();
 
@@ -37,6 +41,8 @@ const LogIn: React.FC = () => {
         if (showPassword) setIcon(eyeOff);
         else setIcon(eye);
     }
+
+    if (serverDown) return <ServerDown />
 
     return (
         <Container className="d-flex justify-content-center align-items-center vh-100">

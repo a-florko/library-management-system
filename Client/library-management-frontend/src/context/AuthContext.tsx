@@ -1,5 +1,6 @@
 import React, { ReactNode, createContext, useState } from "react";
 import { AuthService } from "../services/auth.service";
+import { useServerState } from "./SeverStateContext";
 
 interface AuthContextProps {
     isAuthenticated: boolean;
@@ -15,9 +16,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(localStorage.getItem('isAuthenticated') === 'true');
     const [fullName, setFullName] = useState<string>(localStorage.getItem('fullName') || "");
     const [id, setId] = useState<string>(localStorage.getItem('id') || "");
+
+    const { setServerDown } = useServerState();
     
     const logIn = async (credentials: {login: string, password: string}, rememberMe: boolean) => {
-        const result = await AuthService.logIn(credentials);
+        const result = await AuthService.logIn(credentials, setServerDown);
 
         if (result !== null) {
             setFullName(result.fullName);
