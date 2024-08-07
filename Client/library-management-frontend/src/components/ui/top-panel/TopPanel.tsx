@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import "./TopPanel.css";
 import { useAuth } from "../../../hooks/useAuth";
 
@@ -17,13 +17,20 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                     <span className="h3">Signed in as: Librarian, {fullName}</span>
                 </Navbar.Brand>
                 <Nav className="ms-auto me-4">
-                    <Navbar.Text className="text-white px-2 me-4 pointer-mouse navbar-item" onClick={toggleAddBookModal}>
-                        <span className="h4">Add Book</span>
-                    </Navbar.Text>
-                    <Navbar.Text className="text-white px-2 me-4 pointer-mouse navbar-item" onClick={toggleIssueBookModal}>
-                        <span className="h4">Issue Book</span>
-                    </Navbar.Text>
-                    <Navbar.Text className="text-white px-2 pointer-mouse navbar-item" onClick={logOut}>
+                    <Dropdown>
+                        <Dropdown.Toggle className="me-3 py-2 navbar-item">
+                            <span className="h4">Manage Books</span>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item className="h5" onClick={toggleAddBookModal}>
+                                Add Book
+                            </Dropdown.Item>
+                            <Dropdown.Item className="h5" onClick={toggleIssueBookModal}>
+                                Issue Book
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Navbar.Text className="text-white px-2 me-2 pointer-mouse navbar-item" onClick={logOut}>
                         <span className="h4">Log Out</span>
                     </Navbar.Text>
                 </Nav>
