@@ -33,6 +33,27 @@ namespace LibraryManagementAPI.Controllers
             return book;
         }
 
+        [HttpGet("issued-books")]
+        public async Task<ActionResult<IEnumerable<IssuedBookReturnDto>>> GetIssuedBooks()
+        {
+            var issuedBooks = _context.IssuedBooks
+                .Include(ib => ib.Book)
+                .Include(ib => ib.Borrower)
+                .Select(ib => new IssuedBookReturnDto
+                {
+                    Id = ib.Id,
+                    BookId = ib.BookId,
+                    BookTitle = ib.Book.Title,
+                    BorrowerId = ib.BorrowerId,
+                    BorrowerFullName = ib.Borrower.FullName,
+                    ReturnBefore = ib.ReturnBefore,
+                    Notes = ib.Notes,
+
+                }).ToList();
+
+            return Ok(issuedBooks);
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
