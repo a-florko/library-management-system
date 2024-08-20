@@ -121,6 +121,28 @@ namespace LibraryManagementAPI.Controllers
             return Ok();
         }
 
+        [HttpDelete("return-book/{id}")]
+        public async Task<IActionResult> ReturnBook(int id)
+        {
+            var issuedBook = await _context.IssuedBooks.FindAsync(id);
+            if (issuedBook == null) return NotFound("No record of this book being issued found");
+
+            _context.IssuedBooks.Remove(issuedBook);
+
+            var book = await _context.Books.FindAsync(issuedBook.BookId);
+
+            if (book == null)
+            {
+                return NotFound("The book to be returned is not found in the library");
+            }
+
+            book.CopiesInStock += 1;
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {

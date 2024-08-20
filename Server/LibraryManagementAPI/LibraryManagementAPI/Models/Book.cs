@@ -8,7 +8,7 @@ public partial class Book
 
     public required string Author { get; set; }
 
-    public required string Overview { get; set; }
+    public string? Overview { get; set; }
 
     public required string Language { get; set; }
 
