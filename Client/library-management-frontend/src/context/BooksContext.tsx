@@ -6,6 +6,7 @@ import { BookService } from "../services/book.service";
 interface BooksContextProps {
     books: Book[];
     setBooks: React.Dispatch<React.SetStateAction<Book[]>>;
+    returnCopy: (id: number) => void;
 }
 
 const BooksContext = createContext<BooksContextProps | undefined>(undefined);
@@ -23,8 +24,12 @@ export const BooksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         fetchBooks();
     }, [setServerDown]);
 
+    const returnCopy = (id: number) => {
+        books.map(b => b.id === id ? { ...b, copiesInStock: b.copiesInStock + 1 } : b)
+    }
+
     return (
-        <BooksContext.Provider value={{ books, setBooks }}>
+        <BooksContext.Provider value={{ books, setBooks, returnCopy }}>
             {children}
         </BooksContext.Provider>
     );
