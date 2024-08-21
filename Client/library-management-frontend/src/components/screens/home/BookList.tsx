@@ -16,7 +16,7 @@ const BookList: React.FC<BookListProps> = ({ books }) => {
     }
 
     return (    
-        <Container className="px-5 pt-5">
+        <Container className="px-5 pt-3">
             <div className="h1 text-center">
                 All books
             </div>

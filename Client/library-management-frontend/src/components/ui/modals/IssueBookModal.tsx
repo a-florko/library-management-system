@@ -206,12 +206,12 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue,
                                 value={issueBookData.notes}
                                 style={{ resize: "none" }}
                                 onChange={e => setIssueBookData(prev => ({
-                                    ...prev, overview: e.target.value
+                                    ...prev, notes: e.target.value
                                 }))}>
                             </Form.Control>
                         </Form.Group>
                         <hr className="mx-0 px-0" />
-                        <Form.Group className="mb-3 d-flex align-items-center justify-content-center">
+                        <Form.Group className="d-flex align-items-center justify-content-center">
                             <Button type="button" onClick={handleIssue} variant="btn btn-outline-dark" size="lg">
                                 Submit
                             </Button>
