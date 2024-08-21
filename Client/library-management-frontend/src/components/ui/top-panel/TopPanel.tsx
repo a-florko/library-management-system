@@ -5,9 +5,10 @@ import { useAuth } from "../../../hooks/useAuth";
 interface TopPanelProps {
     toggleAddBookModal: () => void;
     toggleIssueBookModal: () => void;
+    toggleReturnBookModal: () => void;
 }
 
-const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBookModal }) => {
+const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBookModal, toggleReturnBookModal }) => {
     const { fullName, logOut } = useAuth();
 
     return (
@@ -27,6 +28,9 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                             </Dropdown.Item>
                             <Dropdown.Item className="h5" onClick={toggleIssueBookModal}>
                                 Issue Book
+                            </Dropdown.Item>
+                            <Dropdown.Item className="h5" onClick={toggleReturnBookModal}>
+                                Return Book
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
