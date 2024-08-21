@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Book, BookData } from "../types/BookProps";
-import { IssueBookData } from "../types/IssueBookProps";
+import { IssueBookData, IssuedBookReturnDto } from "../types/IssueBookProps";
 
 const API_URL = `${process.env.REACT_APP_API_URL}/books`;
 
@@ -30,6 +30,16 @@ export const BookService = {
         }
     },
 
+    async getIssuedBooks(): Promise<IssuedBookReturnDto[] | null> {
+        try {
+            const response = await axios.get<IssuedBookReturnDto[]>(`${API_URL}/issued-books`);
+            return response.data; 
+        } catch (error: any) {
+            console.error('Error fetching issued books:', error);
+            return null;
+        }
+    },
+
     async create(bookToAdd: BookData): Promise<Book | null> {
         try {
             const response = await axios.post(API_URL, bookToAdd);
@@ -47,6 +57,16 @@ export const BookService = {
             else return false;
         } catch (error: any) {
             console.error('Error adding book:', error);
+            return false;
+        };
+    },
+
+    async returnBook(id: number): Promise<true | false> {
+        try {
+            const response = await axios.delete(`${API_URL}/return-book/${id}`);
+            return response.status === 200 ? true : false;
+        } catch (error: any) {
+            console.error('Error when returning a book:', error.data)
             return false;
         };
     }
