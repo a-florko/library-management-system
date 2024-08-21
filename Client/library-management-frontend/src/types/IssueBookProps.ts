@@ -6,3 +6,13 @@ export interface IssueBookData {
     returnBefore: string,
     notes: string
 }
+
+export interface IssuedBookReturnDto {
+    id: number,
+    bookId: number,
+    bookTitle: string,
+    borrowerId: number,
+    borrowerFullName: string,
+    returnBefore: string,
+    notes: string,
+}
