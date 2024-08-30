@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagementAPI.Models
 {
-    public class IssuedBookReturnDto
+    public class IssuedBookDto
     {
         public int Id { get; set; }
         public required int BookId { get; set; }

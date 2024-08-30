@@ -7,7 +7,7 @@ export interface IssueBookData {
     notes: string
 }
 
-export interface IssuedBookReturnDto {
+export interface IssuedBookDto {
     id: number,
     bookId: number,
     bookTitle: string,

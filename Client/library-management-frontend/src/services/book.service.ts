@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Book, BookData } from "../types/BookProps";
-import { IssueBookData, IssuedBookReturnDto } from "../types/IssueBookProps";
+import { IssueBookData, IssuedBookDto } from "../types/IssueBookProps";
+import { OverdueIssuedBooks } from "../types/OverdueIssuedBookProps";
 
 const API_URL = `${process.env.REACT_APP_API_URL}/books`;
 
@@ -18,23 +19,38 @@ export const BookService = {
         };
     },
 
-    async getById(id: number, setBookIsInLibrary: (error: boolean) => void): Promise<Book | null> {
+    async getById(id: string): Promise<Book | null> {
         try {
             const response = await axios.get<Book>(`${API_URL}/${id}`)
-            setBookIsInLibrary(true);
             return response.data;
         } catch (error: any) {
-            if (error.response.status === 404) setBookIsInLibrary(false);
+            if (error.response.status === 404) return null;
             else console.error('Error fetching book:', error);
             return null;
         }
     },
 
-    async getIssuedBooks(): Promise<IssuedBookReturnDto[] | null> {
+    async getIssuedBooks(setServerDown: (error: boolean) => void): Promise<IssuedBookDto[] | null> {
         try {
-            const response = await axios.get<IssuedBookReturnDto[]>(`${API_URL}/issued-books`);
+            const response = await axios.get<IssuedBookDto[]>(`${API_URL}/issued`);
             return response.data; 
         } catch (error: any) {
+            if (error.code === "ERR_NETWORK") {
+                setServerDown(true);
+            }
+            console.error('Error fetching issued books:', error);
+            return null;
+        }
+    },
+
+    async getOverdueIssuedBooks(setServerDown: (error: boolean) => void): Promise<OverdueIssuedBooks[] | null> {
+        try {
+            const response = await axios.get<OverdueIssuedBooks[]>(`${API_URL}/issued/overdue`);
+            return response.data; 
+        } catch (error: any) {
+            if (error.code === "ERR_NETWORK") {
+                setServerDown(true);
+            }
             console.error('Error fetching issued books:', error);
             return null;
         }

@@ -34,12 +34,12 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpGet("issued")]
-        public async Task<ActionResult<IEnumerable<IssuedBookReturnDto>>> GetIssuedBooks()
+        public async Task<ActionResult<IEnumerable<IssuedBookDto>>> GetIssuedBooks()
         {
             var issuedBooks = _context.IssuedBooks
                 .Include(ib => ib.Book)
                 .Include(ib => ib.Borrower)
-                .Select(ib => new IssuedBookReturnDto
+                .Select(ib => new IssuedBookDto
                 {
                     Id = ib.Id,
                     BookId = ib.BookId,
