@@ -29,11 +29,11 @@ namespace LibraryManagementAPI.Controllers
             {
                 return NotFound();
             }
-
+            
             return book;
         }
 
-        [HttpGet("issued-books")]
+        [HttpGet("issued")]
         public async Task<ActionResult<IEnumerable<IssuedBookReturnDto>>> GetIssuedBooks()
         {
             var issuedBooks = _context.IssuedBooks
@@ -52,6 +52,30 @@ namespace LibraryManagementAPI.Controllers
                 }).ToList();
 
             return Ok(issuedBooks);
+        }
+
+        [HttpGet("issued/overdue")]
+        public async Task<ActionResult<IEnumerable<OverdueIssuedBook>>> GetOverdueIssuedBooks() 
+        {
+            DateOnly todayDate = DateOnly.FromDateTime(DateTime.Today);
+
+            var issuedBooks = await _context.IssuedBooks
+                .Include(ib => ib.Book)
+                .Include(ib => ib.Borrower)
+                .Where(ib => ib.ReturnBefore < todayDate)
+                .ToListAsync();
+
+            var overdueIssuedBooks = issuedBooks.Select(ib => new OverdueIssuedBook
+            {
+                Id = ib.Id,
+                BookTitle = ib.Book.Title,
+                BorrowerFullName = ib.Borrower.FullName,
+                BorrowerTelephone = ib.Borrower.Telephone,
+                BorrowerEmail = ib.Borrower.Email,
+                Overdue = (todayDate.ToDateTime(TimeOnly.MinValue) - ib.ReturnBefore.ToDateTime(TimeOnly.MinValue)).Days,
+            }).ToList();
+
+            return Ok(overdueIssuedBooks);
         }
 
         [HttpPut("{id}")]
