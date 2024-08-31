@@ -1,0 +1,23 @@
+.dropdown-toggle {
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+    background-color: rgb(238, 220, 220);
+    border-color: rgb(212, 199, 199);
+    border-radius: 10px;
+}
+
+.dropdown-toggle:active,
+.dropdown-toggle:hover,
+.dropdown-toggle:focus,
+.dropdown-item:hover,
+.dropdown-item:active,
+.dropdown-item:focus {
+    background-color: rgb(238, 209, 209) !important;
+    border-color: rgb(238, 209, 209) !important;
+}
+
+.dropdown-toggle:active,
+.dropdown-toggle:hover,
+.dropdown-toggle:focus {
+    border-radius: 25px;
+}

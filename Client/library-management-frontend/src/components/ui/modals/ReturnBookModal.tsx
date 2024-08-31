@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { IssuedBookReturnDto } from "../../../types/IssueBookProps";
+import { IssuedBookDto } from "../../../types/IssueBookProps";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { BookService } from "../../../services/book.service";
-import { useBooks } from "../../../context/BooksContext";
+import { useBooks } from "../../../hooks/useBooks";
 
 interface ReturnBookModalProps {
     showModal: boolean;
@@ -12,35 +12,29 @@ interface ReturnBookModalProps {
 
 const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModal }) => {
     const [selectedBookTitle, setSelectedBookTitle] = useState<string | undefined>();
-    const [issuedBookToReturn, setIssuedBookToReturn] = useState<IssuedBookReturnDto | undefined>(undefined);
+    const [issuedBookToReturn, setIssuedBookToReturn] = useState<IssuedBookDto | undefined>(undefined);
     const [overdueReturnDateBy, setOverdueReturnDateBy] = useState<number | null>(null);
 
-    const [issuedBooks, setIssuedBooks] = useState<IssuedBookReturnDto[]>([]);
+    const { loadIssuedBooks, issuedBooks } = useBooks();
 
     const { returnCopy } = useBooks();
 
-    const getIssuedBooks = async () => {
-        const requestResult = await BookService.getIssuedBooks();
-        if (requestResult !== null) setIssuedBooks(requestResult);
-    }
-
     useEffect(() => {
         if (showModal) {
-            getIssuedBooks();
+            loadIssuedBooks()
         }
-    }, [showModal])
+    }, [showModal, loadIssuedBooks])
 
     const handleBookTitleSelection = (selected: string) => {
-        const result = issuedBooks.some(ib => (ib.bookTitle === selected));
+        const result = issuedBooks?.some(ib => (ib.bookTitle === selected));
         if (result) return setSelectedBookTitle(selected);
 
         setSelectedBookTitle(undefined)
         setIssuedBookToReturn(undefined)
     }
 
-
     const handleBorrowerSelection = (borrowerFullName: string) => {
-        const result = issuedBooks.find(ib => ib.bookTitle === selectedBookTitle
+        const result = issuedBooks?.find(ib => ib.bookTitle === selectedBookTitle
             && ib.borrowerFullName === borrowerFullName);
 
         if (!result) {
@@ -53,7 +47,7 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
         setOverdueReturnDateBy(calculateOvedue(result));
     }
 
-    const calculateOvedue = (issuedBookReturnDto: IssuedBookReturnDto): number | null => {
+    const calculateOvedue = (issuedBookReturnDto: IssuedBookDto): number | null => {
         const returnBeforeDate = new Date(issuedBookReturnDto.returnBefore);
         const todayDate = new Date()
 
@@ -97,7 +91,7 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
                                 handleBookTitleSelection(String(selected))
                             }
                             }
-                            options={[...new Set(issuedBooks.map(issuedBook => (
+                            options={[...new Set(issuedBooks?.map(issuedBook => (
                                 issuedBook.bookTitle
                             )))]}
                             placeholder="Book To Return"
@@ -111,7 +105,7 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
                                 onChange={selected => {
                                     handleBorrowerSelection(selected.toString())
                                 }}
-                                options={issuedBooks
+                                options={issuedBooks!
                                     .filter(ib => ib.bookTitle === selectedBookTitle)
                                     .map(ib => ib.borrowerFullName)}
                                 placeholder="Borrower"

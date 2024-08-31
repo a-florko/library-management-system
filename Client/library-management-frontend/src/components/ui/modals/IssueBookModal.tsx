@@ -5,12 +5,12 @@ import { BookService } from "../../../services/book.service";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import { IssueBookData } from "../../../types/IssueBookProps";
-import { useBooks } from "../../../context/BooksContext";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Typeahead } from "react-bootstrap-typeahead";
 import { BorrowerService } from "../../../services/borrower.service";
 import { BorrowerDto } from "../../../types/BorrowerProps";
 import AddNewBorrowerModal from "./AddNewBorrowerModal";
+import { useBooks } from "../../../hooks/useBooks";
 
 interface IssueBookModalProps {
     showModal: boolean;
@@ -104,7 +104,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue,
     }
 
     const handleBookSelection = (selectedBook: string) => {
-        const result = books.find(b => (b.title === selectedBook));
+        const result = books!.find(b => (b.title === selectedBook));
         if (result === undefined) return setBookSelectionValidation(false);
         setIssueBookData(prev => ({
             ...prev, bookId: result.id
@@ -129,7 +129,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue,
                                     handleBookSelection(String(selected))
                                 }
                                 }
-                                options={books.map(book => (
+                                options={books!.map(book => (
                                     book.title
                                 ))}
                                 placeholder="Book"
