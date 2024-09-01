@@ -12,32 +12,37 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
     const { fullName, logOut } = useAuth();
 
     return (
-        <Navbar expand="lg" bg="dark" data-bs-theme="light">
+        <Navbar expand="lg" bg="dark" data-bs-theme="light" className="">
             <Container>
-                <Navbar.Brand className={`text-white ms-3 px-2 pointer-mouse ${styles['navbar-item']}`}>
+                <Navbar.Brand className={`text-white ms-3 px-2 pointer-mouse me-auto ${styles['navbar-item']}`}>
                     <span className="h3">Signed in as: Librarian, {fullName}</span>
                 </Navbar.Brand>
-                <Nav className="ms-auto me-4">
-                    <Dropdown>
-                        <Dropdown.Toggle className={`${styles['dropdown-toggle']} me-3 py-2`}>
-                            <span className="h4">Manage Books</span>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item className="h5" onClick={toggleAddBookModal}>
-                                Add Book
-                            </Dropdown.Item>
-                            <Dropdown.Item className="h5" onClick={toggleIssueBookModal}>
-                                Issue Book
-                            </Dropdown.Item>
-                            <Dropdown.Item className="h5" onClick={toggleReturnBookModal}>
-                                Return Book
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Navbar.Text className={`text-white px-2 pointer-mouse ${styles['navbar-item']}`} onClick={logOut}>
-                        <span className="h4">Log Out</span>
-                    </Navbar.Text>
-                </Nav>
+                <Navbar.Toggle className="bg-white me-3"/>
+                <Navbar.Collapse className={`justify-content-end pe-4 ms-3 ${styles['navbar-collapsed']}`}>
+                    <Nav className="justify-content-end">
+                        <Dropdown>
+                            <Dropdown.Toggle className={`${styles['dropdown-toggle']} me-3 p-2`}>
+                                <span className="h4">Manage Books</span>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className="">
+                                <Dropdown.Item className="h5" onClick={toggleAddBookModal}>
+                                    Add Book
+                                </Dropdown.Item>
+                                <Dropdown.Item className="h5" onClick={toggleIssueBookModal}>
+                                    Issue Book
+                                </Dropdown.Item>
+                                <Dropdown.Item className="h5" onClick={toggleReturnBookModal}>
+                                    Return Book
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <div className={`mt-2 ${styles['log-out']}`}>
+                            <span className={`text-white pointer-mouse h4 p-2 ${styles['navbar-item']} ${styles['log-out-span']}`} onClick={logOut}>
+                                Log Out
+                            </span>
+                        </div>
+                    </Nav>
+                </Navbar.Collapse>
             </Container>
         </Navbar>
     )

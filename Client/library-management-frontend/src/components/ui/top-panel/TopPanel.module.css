@@ -13,7 +13,20 @@
     border-color: rgb(85, 83, 83) !important;
 }
 
-.h3,
-.h4 {
-    margin-bottom: .4rem;
+@media all and (max-width: 991px) {
+    .navbar-collapsed {
+        margin-top: 0.25rem
+    }
+
+    .log-out {
+        margin-bottom: 0.3rem !important;
+    }
+
+    .log-out-span {
+        padding-top: 0.2rem !important;
+    }
+
+    .dropdown-menu {
+        background-color: black !important;
+    }
 }
