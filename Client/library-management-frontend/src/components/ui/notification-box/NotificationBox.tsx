@@ -17,4 +17,4 @@ const NotificationBox: React.FC<NotificationBoxProps> = ({ visible, mainText, su
     )
 }
 
-export default NotificationBox;     
+export default NotificationBox;

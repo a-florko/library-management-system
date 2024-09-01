@@ -1,5 +1,4 @@
-﻿using Humanizer;
-using LibraryManagementAPI.Models;
+﻿using LibraryManagementAPI.Models;
 
 namespace LibraryManagementAPI.Services.Contracts
 {
