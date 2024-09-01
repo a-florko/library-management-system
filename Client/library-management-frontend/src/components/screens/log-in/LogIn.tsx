@@ -48,7 +48,7 @@ const LogIn: React.FC = () => {
         <Container className="d-flex justify-content-center align-items-center vh-100">
             <div className="d-flex flex-column border rounded px-5 bg-light">
                 <div className="d-flex flex-column align-items-center">
-                    <h1 className="pt-2">Welcome!</h1>
+                    <h1 className="pt-3">Welcome!</h1>
                     <h2>To start working, please log in</h2>
                 </div>
                 <hr />
@@ -74,17 +74,19 @@ const LogIn: React.FC = () => {
                             })}
                             className="pe-5"
                         />
-                        <span className="position-absolute pointer-mouse" style={{ right: '10px', top: '50%', transform: 'translateY(-50%)'}}>
+                        <span className="position-absolute pointer-mouse" style={{ right: '10px', top: '50%', transform: 'translateY(-50%)' }}>
                             <Icon icon={icon} size={25} onClick={togglePasswordVisibility} />
                         </span>
                     </Form.Group>
-                    <Form.Check className="my-3 h5"
+                    <Form.Check className="my-3 h5 pb-2"
                         type="switch"
                         label="Remember Me"
                         onChange={e => setRememberMe(e.target.checked)}
                     />
-                    <div className="flex-column d-flex align-items-center ">
-                        <Button type="submit" className="w-25 mb-3 h-1" variant="btn btn-outline-dark" size="lg">Log In</Button>
+                    <div className="flex-column d-flex align-items-center pb-1">
+                        <Button type="submit" className="mb-3 submit-button" size="lg">
+                            <span className="h4">Log In</span>
+                        </Button>
                     </div>
                 </Form>
             </div >
