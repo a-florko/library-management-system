@@ -17,21 +17,21 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                 <Navbar.Brand className={`text-white ms-3 px-2 pointer-mouse me-auto ${styles['navbar-item']}`}>
                     <span className="h3">Signed in as: Librarian, {fullName}</span>
                 </Navbar.Brand>
-                <Navbar.Toggle className="bg-white me-3"/>
+                <Navbar.Toggle className="bg-white me-3" />
                 <Navbar.Collapse className={`justify-content-end pe-4 ms-3 ${styles['navbar-collapsed']}`}>
                     <Nav className="justify-content-end">
                         <Dropdown>
-                            <Dropdown.Toggle className={`${styles['dropdown-toggle']} me-3 p-2`}>
+                            <Dropdown.Toggle className={`${styles['dropdown-toggle']} me-3 p-2 text-white`} variant="">
                                 <span className="h4">Manage Books</span>
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="">
-                                <Dropdown.Item className="h5" onClick={toggleAddBookModal}>
+                            <Dropdown.Menu className={styles['show']}>
+                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleAddBookModal}>
                                     Add Book
                                 </Dropdown.Item>
-                                <Dropdown.Item className="h5" onClick={toggleIssueBookModal}>
+                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleIssueBookModal}>
                                     Issue Book
                                 </Dropdown.Item>
-                                <Dropdown.Item className="h5" onClick={toggleReturnBookModal}>
+                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleReturnBookModal}>
                                     Return Book
                                 </Dropdown.Item>
                             </Dropdown.Menu>

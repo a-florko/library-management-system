@@ -1,4 +1,4 @@
-.navbar-item, .dropdown-toggle {
+.navbar-item, .dropdown-toggle, .dropdown-item {
     background-color: transparent;
     transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
     border: none;
@@ -7,10 +7,22 @@
 .navbar-item:hover,
 .dropdown-toggle:active,
 .dropdown-toggle:hover,
-.dropdown-toggle:focus {
+.dropdown-toggle:focus,
+.btn.show {
     background-color: rgb(85, 83, 83) !important;
     border-radius: 15px !important;
     border-color: rgb(85, 83, 83) !important;
+}
+
+.dropdown-item:active,
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: rgb(168, 164, 164) ;
+    border-color: rgb(164, 164, 164) ;
+}
+
+.show {
+    width: 190px;
 }
 
 @media all and (max-width: 991px) {
@@ -19,14 +31,15 @@
     }
 
     .log-out {
-        margin-bottom: 0.3rem !important;
+        margin-bottom: 0.3rem ;
     }
 
     .log-out-span {
-        padding-top: 0.2rem !important;
+        padding-top: 0.2rem ;
     }
 
-    .dropdown-menu {
-        background-color: black !important;
+    .show {
+        width: 36.5%;
+        position: absolute !important;
     }
 }
