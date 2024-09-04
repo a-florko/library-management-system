@@ -1,8 +1,8 @@
 .dropdown-toggle {
     background-color: transparent;
     transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
-    background-color: rgb(238, 220, 220);
-    border-color: rgb(212, 199, 199);
+    background-color: rgb(238, 220, 220) !important;
+    border-color: rgb(212, 199, 199) !important;
     border-radius: 10px;
 }
 
