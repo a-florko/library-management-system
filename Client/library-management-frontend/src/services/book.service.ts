@@ -19,12 +19,13 @@ export const BookService = {
         };
     },
 
-    async getById(id: string): Promise<Book | null> {
+    async getById(id: string, setServerDown: (error: boolean) => void): Promise<Book | null> {
         try {
             const response = await axios.get<Book>(`${API_URL}/${id}`)
             return response.data;
         } catch (error: any) {
-            if (error.response.status === 404) return null;
+            if (error.code === "ERR_NETWORK") setServerDown(true);
+            else if (error.response.status === 404) return null;
             else console.error('Error fetching book:', error);
             return null;
         }

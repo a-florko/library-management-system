@@ -16,3 +16,7 @@ body {
 .submit-button:hover {
   border-radius: 15px;
 }
+
+ol.breadcrumb {
+  margin-bottom: 0px;
+}
