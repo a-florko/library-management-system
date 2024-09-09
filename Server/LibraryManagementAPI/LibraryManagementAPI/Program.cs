@@ -27,8 +27,11 @@ internal class Program
 
         using (var scope = app.Services.CreateScope())
         {
-            var dataContext = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
-            dataContext.Database.Migrate();
+            var dbContext = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+            if (dbContext.Database.GetPendingMigrations().Any())
+            {
+                dbContext.Database.Migrate();
+            }
         }
 
         // Configure the HTTP request pipeline.

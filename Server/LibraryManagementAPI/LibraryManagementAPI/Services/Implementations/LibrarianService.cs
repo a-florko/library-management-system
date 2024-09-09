@@ -1,5 +1,4 @@
 ﻿using LibraryManagementAPI.Data;
-using LibraryManagementAPI.Models;
 using LibraryManagementAPI.Services.Contracts;
 
 namespace LibraryManagementAPI.Services.Implementations
