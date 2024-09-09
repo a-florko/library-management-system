@@ -1,6 +1,6 @@
 # Library Management System
 ## Overview
-This project is a Library Management System built using React for the frontend and .NET Web API with Entity Framework Core and MySQL for the backend. The system allows users to manage library books efficiently by providing functionalities to view, add, update, and delete book records.
+The **Library Management System** is a full-stack web application designed to streamline the management of books within a library. It offers core functionalities like viewing, adding, updating, and deleting books. This project is built using **React** for the frontend and **.NET Web API** with **Entity Framework Core** and **MySQL** for the backend.
 
 ## Features
 - **View Books:** Display a list of all books in the library.
@@ -8,19 +8,20 @@ This project is a Library Management System built using React for the frontend a
 - **Add Book:** Add new books to the library.
 - **Update Book:** Edit information of existing books.
 - **Delete Book:** Remove books from the library.
+- **Overdue Book Tracking:** View books that are overdue for return..
   
 ## Technologies Used
 ### Frontend
-- **React:** JavaScript library for building user interfaces.
-- **TypeScript:** Superset of JavaScript that adds static types.
-- **Axios:** Promise-based HTTP client for making requests to the backend.
-- **React Router:** Library for routing in React applications.
-- **Bootstrap:** CSS framework directed at responsive, mobile-first front-end web development.
+- **React**
+- **TypeScript**
+- **Axios**
+- **React Router**
+- **Bootstrap**
 
 ### Backend
-- **.NET Web API:** Framework for building RESTful APIs.
-- **Entity Framework Core:** ORM for interacting with the database.
-- **MySQL:** Relational database management system.
+- **.NET Web API**
+- **Entity Framework Core**
+- **MySQL**
 
 ## Getting Started
 ### Prerequisites
