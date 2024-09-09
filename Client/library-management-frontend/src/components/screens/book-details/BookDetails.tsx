@@ -48,7 +48,7 @@ const BookDetails: React.FC = () => {
     }
 
     return (
-        <Container className="vh-100 d-flex align-content-center flex-wrap container-w">
+        <Container className="vh-100 d-flex align-content-center flex-column justify-content-center flex-wrap container-w">
             <Breadcrumb className="border rounded bg-white h3 p-2">
                 <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }} className="">
                     Home
