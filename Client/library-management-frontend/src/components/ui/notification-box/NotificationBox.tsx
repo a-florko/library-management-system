@@ -7,12 +7,13 @@ interface NotificationBoxProps {
 }
 
 const NotificationBox: React.FC<NotificationBoxProps> = ({ visible, mainText, subText }) => {
-    if (!visible) return <></>;
-
     return (
-        <div className="notification-box text-center" role="alert">
-            <h1 className="main-text pb-2">{mainText}</h1>
-            <h3>{subText}</h3>
+        <div
+            className={`notification-box text-center alert alert-danger ${visible ? "visible" : "hidden"
+                }`}
+            role="alert">
+            <h2 className="main-text">{mainText}</h2>
+            <h4>{subText}</h4>
         </div>
     )
 }
