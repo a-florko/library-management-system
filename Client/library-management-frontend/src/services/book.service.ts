@@ -86,5 +86,18 @@ export const BookService = {
             console.error('Error when returning a book:', error.data)
             return false;
         };
-    }
+    },
+
+    async deleteById(id: number, setServerDown: (error: boolean) => void): Promise<true | false> {
+        try {
+            await axios.delete(`${API_URL}/${id}`);
+            return true;
+        } catch (error: any) {
+            if (error.code === "ERR_NETWORK") {
+                setServerDown(true);
+            }
+            console.error('Error deleting book:', error.message);
+            return false;
+        };
+    },
 }
