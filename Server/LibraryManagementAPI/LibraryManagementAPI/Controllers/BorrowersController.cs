@@ -24,7 +24,7 @@ namespace LibraryManagementAPI.Controllers
         [Route("get-full-names-with-id")]
         public async Task<ActionResult<IEnumerable<BorrowerDto>>> GetFullNamesWithId()
         {
-            List<BorrowerDto> result = _borrowerService.GetDtoBorrowers();
+            List<BorrowerDto> result = await _borrowerService.GetDtoBorrowers();
             
             return Ok(result);
         }

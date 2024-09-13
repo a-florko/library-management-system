@@ -1,6 +1,7 @@
 ﻿using LibraryManagementAPI.Data;
 using LibraryManagementAPI.Models;
 using LibraryManagementAPI.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementAPI.Services.Implementations
 {
@@ -8,13 +9,13 @@ namespace LibraryManagementAPI.Services.Implementations
     {
         private readonly LibraryDbContext _context = context;
 
-        public List<BorrowerDto> GetDtoBorrowers()
+        public async Task<List<BorrowerDto>> GetDtoBorrowers()
         {
-            var dtoBorrowers = _context.Borrowers.Select(
+            var dtoBorrowers = await _context.Borrowers.Select(
                 b => new BorrowerDto {
                     Id = b.Id,
                     FullName = b.FullName
-                }).ToList();
+                }).ToListAsync();
 
             return dtoBorrowers;
         }

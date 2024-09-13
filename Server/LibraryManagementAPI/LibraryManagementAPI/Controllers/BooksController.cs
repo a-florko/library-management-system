@@ -36,7 +36,7 @@ namespace LibraryManagementAPI.Controllers
         [HttpGet("issued")]
         public async Task<ActionResult<IEnumerable<IssuedBookDto>>> GetIssuedBooks()
         {
-            var issuedBooks = _context.IssuedBooks
+            var issuedBooks = await _context.IssuedBooks
                 .Include(ib => ib.Book)
                 .Include(ib => ib.Borrower)
                 .Select(ib => new IssuedBookDto
@@ -49,7 +49,7 @@ namespace LibraryManagementAPI.Controllers
                     ReturnBefore = ib.ReturnBefore,
                     Notes = ib.Notes,
 
-                }).ToList();
+                }).ToListAsync();
 
             return Ok(issuedBooks);
         }
@@ -191,7 +191,7 @@ namespace LibraryManagementAPI.Controllers
         {
             Book? book = _context.Books.FirstOrDefault(b => b.Id == bookId);
             if (book == null) return false;
-            else return book.TotalCopies > 0;
+            else return book.CopiesInStock > 0;
         }
     }
 }

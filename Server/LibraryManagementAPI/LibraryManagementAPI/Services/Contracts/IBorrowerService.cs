@@ -4,7 +4,7 @@ namespace LibraryManagementAPI.Services.Contracts
 {
     public interface IBorrowerService
     {
-        List<BorrowerDto> GetDtoBorrowers();
+        Task<List<BorrowerDto>> GetDtoBorrowers();
         bool ExistById(int id);
     }
 }

@@ -18,7 +18,7 @@ namespace LibraryManagementAPI.Controllers
         [HttpPost("try-to-log-in")]
         public async Task<IActionResult> TryToLogIn(LogInDto logInDto)
         {
-            Librarian? librarian = _context.Librarians.SingleOrDefault(l => l.Login == logInDto.Login);
+            Librarian? librarian = await _context.Librarians.SingleOrDefaultAsync(l => l.Login == logInDto.Login);
             if (librarian == null) return Unauthorized("Invalid credentials");
 
             PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(librarian.LastName, librarian.Password, logInDto.Password);
