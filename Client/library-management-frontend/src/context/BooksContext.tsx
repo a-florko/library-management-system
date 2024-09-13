@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Book } from "../types/BookProps";
+import { Book, BookData } from "../types/BookProps";
 import { useServerState } from "./SeverStateContext";
 import { BookService } from "../services/book.service";
 import { IssuedBookDto } from "../types/IssueBookProps";
@@ -9,11 +9,12 @@ interface BooksContextProps {
     books: Book[] | undefined;
     issuedBooks: IssuedBookDto[] | undefined;
     overdueIssuedBooks: OverdueIssuedBooks[] | undefined;
-    addBook: (newBook: Book) => void;
+    addBook: (newBook: BookData) => Promise<boolean>;
     issueCopy: (bookId: number) => void;
     returnCopy: (id: number) => void;
     loadIssuedBooks: () => Promise<void>;
     loadOverdueIssuedBooks: () => Promise<void>;
+    deleteBook: (id: number) => Promise<boolean>;
 }
 
 export const BooksContext = createContext<BooksContextProps | undefined>(undefined);
@@ -33,16 +34,22 @@ export const BooksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         fetchBooks();
     }, [setServerDown]);
 
-    const addBook = (newBook: Book) => {
-        setBooks(prevBooks => [...(prevBooks || []), newBook])
+    const addBook = async (newBook: BookData): Promise<boolean> => {
+        const addedBook = await BookService.create(newBook);
+        if (addedBook) {
+            setBooks(prevBooks => [...(prevBooks || []), addedBook]);
+            return true;
+        }
+        return false;
     }
 
     const issueCopy = (bookId: number) => {
-        books!.map(b => b.id === bookId ? { ...b, copiesInStock: b.copiesInStock - 1 } : b)
+        books!.map(b => b.id === bookId ? { ...b, copiesInStock: b.copiesInStock - 1 } : b);
     };
 
-    const returnCopy = (id: number) => {
-        books!.map(b => b.id === id ? { ...b, copiesInStock: b.copiesInStock + 1 } : b)
+    const returnCopy = async (id: number) => {
+        BookService.returnBook(id)
+        books!.map(b => b.id === id ? { ...b, copiesInStock: b.copiesInStock + 1 } : b);
     }
 
     const loadIssuedBooks = async () => {
@@ -55,11 +62,18 @@ export const BooksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (requestResult !== null) setOverdueIssuedBooks(requestResult);
     }
 
+    const deleteBook = async (id: number): Promise<boolean> => {
+        const isOperationSuccessful = await BookService.deleteById(id, setServerDown);
+        if (!isOperationSuccessful) return false;
+        setBooks(prevBooks => prevBooks!.filter(b => b.id !== id));
+        return true;
+    }
+
     return (
         <BooksContext.Provider value={{
             books, issuedBooks, overdueIssuedBooks,
             addBook, issueCopy, returnCopy,
-            loadIssuedBooks, loadOverdueIssuedBooks
+            loadIssuedBooks, loadOverdueIssuedBooks, deleteBook
         }}>
             {children}
         </BooksContext.Provider>

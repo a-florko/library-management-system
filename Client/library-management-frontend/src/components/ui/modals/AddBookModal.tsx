@@ -28,10 +28,9 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, toggleModal }) =
 
     const handleSubmit = async () => {
         try {
-            const addedBook = await BookService.create(bookToAdd);
-            if (addedBook) {
+            const isBookAdded = await addBook(bookToAdd);
+            if (isBookAdded) {
                 toggleModal();
-                addBook(addedBook);
                 setBookToAdd(initialBookData);
             }
             else showNotification("Failed to add book", "Please try again later", 5000)

@@ -9,22 +9,21 @@ import { useBooks } from "../../../hooks/useBooks";
 import ReturnBookModal from "../../ui/modals/ReturnBookModal";
 import LoadingSpinner from "../../ui/LoadingSpinner";
 import { BooksProvider } from "../../../context/BooksContext";
+import DeleteBookModal from "../../ui/modals/DeleteBookModal";
 
 const Home: React.FC = () => {
     const [showAddBookModal, setShowAddBookModal] = useState(false);
-    const [showIssueBookModal, setShowsetIssueBookModal] = useState(false);
-    const [showReturnBookModal, setShowsetReturnBookModal] = useState(false);
+    const [showIssueBookModal, setShowIssueBookModal] = useState(false);
+    const [showReturnBookModal, setShowReturnBookModal] = useState(false);
+    const [showDeleteBookModal, setShowDeleteBookModal] = useState(false);
 
     const { books } = useBooks();
     const { serverDown } = useServerState();
 
-    const handleBookIssue = (bookId: number) => {
-        if (books) books.map(b => b.id === bookId ? { ...b, copiesInStock: b.copiesInStock - 1 } : b)
-    };
-
     const toggleAddBookModal = () => setShowAddBookModal(!showAddBookModal);
-    const toggleIssueBookModal = () => setShowsetIssueBookModal(!showIssueBookModal);
-    const toggleReturnBookModal = () => setShowsetReturnBookModal(!showReturnBookModal);
+    const toggleIssueBookModal = () => setShowIssueBookModal(!showIssueBookModal);
+    const toggleReturnBookModal = () => setShowReturnBookModal(!showReturnBookModal);
+    const toggleDeleteBookModal = () => setShowDeleteBookModal(!showDeleteBookModal);
 
     if (serverDown) return <ServerDown />
     if (!books) return <LoadingSpinner />
@@ -34,11 +33,13 @@ const Home: React.FC = () => {
                 toggleAddBookModal={toggleAddBookModal}
                 toggleIssueBookModal={toggleIssueBookModal}
                 toggleReturnBookModal={toggleReturnBookModal}
+                toggleDeleteBookModal={toggleDeleteBookModal}
             />
             <BookList />
             <AddBookModal showModal={showAddBookModal} toggleModal={toggleAddBookModal} />
-            <IssueBookModal showModal={showIssueBookModal} onBookIssue={handleBookIssue} toggleModal={toggleIssueBookModal} />
+            <IssueBookModal showModal={showIssueBookModal} toggleModal={toggleIssueBookModal} />
             <ReturnBookModal showModal={showReturnBookModal} toggleModal={toggleReturnBookModal} />
+            <DeleteBookModal showModal={showDeleteBookModal} toggleModal={toggleDeleteBookModal} />
         </>
     )
 }

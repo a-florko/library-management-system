@@ -14,7 +14,6 @@ import { useBooks } from "../../../hooks/useBooks";
 
 interface IssueBookModalProps {
     showModal: boolean;
-    onBookIssue: (bookId: number) => void;
     toggleModal: () => void;
 }
 
@@ -27,11 +26,11 @@ const initialIssueBookData: IssueBookData = {
     notes: "",
 };
 
-const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue, toggleModal }) => {
+const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, toggleModal }) => {
     const [issueBookData, setIssueBookData] = useState<IssueBookData>(initialIssueBookData);
     const { visible, mainText, subText, showNotification } = useNotification();
     const { id } = useAuth();
-    const { books } = useBooks();
+    const { books, issueCopy } = useBooks();
     const [bookSelectionValidation, setBookSelectionValidation] = useState<boolean>(true);
 
     const [borrowerType, setBorrowerType] = useState<'new' | 'existing' | 'not set'>('not set');
@@ -57,7 +56,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue,
                     const resultIssuingBook = await BookService.issue(issueBookData);
                     if (resultIssuingBook) {
                         toggleModal();
-                        onBookIssue(issueBookData.bookId);
+                        issueCopy(issueBookData.bookId);
                         setIssueBookData(initialIssueBookData);
                     } else {
                         showNotification("Failed to issue book", "Please try again later", 5000);
@@ -71,7 +70,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue,
         };
 
         issueBook();
-    }, [shouldSubmit, issueBookData, onBookIssue, showNotification, toggleModal]);
+    }, [shouldSubmit, issueBookData, showNotification, toggleModal]);
 
     const handleIssue = (e: React.FormEvent) => {
         e.preventDefault();
@@ -129,9 +128,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, onBookIssue,
                                     handleBookSelection(String(selected))
                                 }
                                 }
-                                options={books!.map(book => (
-                                    book.title
-                                ))}
+                                options={books!.filter(book => book.copiesInStock > 0).map(book => book.title)}
                                 placeholder="Book"
                                 isInvalid={!bookSelectionValidation}
                             />

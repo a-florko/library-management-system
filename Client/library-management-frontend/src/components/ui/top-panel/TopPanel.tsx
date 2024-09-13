@@ -6,9 +6,11 @@ interface TopPanelProps {
     toggleAddBookModal: () => void;
     toggleIssueBookModal: () => void;
     toggleReturnBookModal: () => void;
+    toggleDeleteBookModal: () => void;
 }
 
-const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBookModal, toggleReturnBookModal }) => {
+const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBookModal,
+                                            toggleReturnBookModal, toggleDeleteBookModal }) => {
     const { fullName, logOut } = useAuth();
 
     return (
@@ -33,6 +35,9 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                                 </Dropdown.Item>
                                 <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleReturnBookModal}>
                                     Return Book
+                                </Dropdown.Item>
+                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleDeleteBookModal}>
+                                    Delete Book
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>

@@ -68,7 +68,6 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
 
     const handleBookReturn = () => {
         if (issuedBookToReturn) {
-            const returnBookResult = BookService.returnBook(issuedBookToReturn.id)
             returnCopy(issuedBookToReturn.bookId);
         }
         setSelectedBookTitle(undefined);
