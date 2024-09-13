@@ -6,7 +6,7 @@ const ServerDown: React.FC = () => {
                     There was an error with the server :(
                 </h1>
                 <h3 className="pt-3">
-                    Try reloading the page or try again later
+                    Notify the people responsible for the system if the problem persists
                 </h3>
             </div>
         </div>
