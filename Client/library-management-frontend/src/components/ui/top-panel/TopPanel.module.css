@@ -22,7 +22,7 @@
 }
 
 .show {
-    width: 190px;
+    width: 100%;
 }
 
 @media all and (max-width: 991px) {
