@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Borrower } from "../../../types/BorrowerProps";
 import { Button, Form, Modal } from "react-bootstrap";
 import { BorrowerService } from "../../../services/borrower.service";
+import { Borrower } from "../../../types/BorrowerProps";
 
 interface NewBorrowerModalProps {
     showModal: boolean;
     toggleModal: () => void;
-}
+};
 
 const initialBorrowerData: Borrower = {
     fullName: '',
@@ -82,7 +82,7 @@ const AddNewBorrowerModal: React.FC<NewBorrowerModalProps> = ({ showModal, toggl
                 </Form>
             </Modal.Body>
         </Modal>
-    )
-}
+    );
+};
 
 export default AddNewBorrowerModal;

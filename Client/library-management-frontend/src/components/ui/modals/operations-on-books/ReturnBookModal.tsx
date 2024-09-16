@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { IssuedBookDto } from "../../../types/IssueBookProps";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { BookService } from "../../../services/book.service";
-import { useBooks } from "../../../hooks/useBooks";
+import { IssuedBookDto } from "../../../../types/IssueBookProps";
+import { useBooks } from "../../../../hooks/useBooks";
 
 interface ReturnBookModalProps {
     showModal: boolean;

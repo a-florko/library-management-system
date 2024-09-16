@@ -1,16 +1,16 @@
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import NotificationBox from "../notification-box/NotificationBox";
-import useNotification from "../../../hooks/useNotification";
-import { BookService } from "../../../services/book.service";
+import NotificationBox from "../../notification-box/NotificationBox";
+import useNotification from "../../../../hooks/useNotification";
+import { BookService } from "../../../../services/book.service";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
-import { IssueBookData } from "../../../types/IssueBookProps";
+import { useAuth } from "../../../../hooks/useAuth";
+import { IssueBookData } from "../../../../types/IssueBookProps";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Typeahead } from "react-bootstrap-typeahead";
-import { BorrowerService } from "../../../services/borrower.service";
-import { BorrowerDto } from "../../../types/BorrowerProps";
-import AddNewBorrowerModal from "./AddNewBorrowerModal";
-import { useBooks } from "../../../hooks/useBooks";
+import { BorrowerService } from "../../../../services/borrower.service";
+import { BorrowerDto } from "../../../../types/BorrowerProps";
+import AddNewBorrowerModal from "../AddNewBorrowerModal";
+import { useBooks } from "../../../../hooks/useBooks";
 
 interface IssueBookModalProps {
     showModal: boolean;
@@ -70,7 +70,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, toggleModal 
         };
 
         issueBook();
-    }, [shouldSubmit, issueBookData, showNotification, toggleModal]);
+    }, [shouldSubmit, issueBookData, showNotification, toggleModal, issueCopy]);
 
     const handleIssue = (e: React.FormEvent) => {
         e.preventDefault();

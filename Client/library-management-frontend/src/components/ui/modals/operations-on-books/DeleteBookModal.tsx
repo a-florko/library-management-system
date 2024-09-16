@@ -2,9 +2,11 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Typeahead } from "react-bootstrap-typeahead";
-import { useBooks } from "../../../hooks/useBooks";
-import useNotification from "../../../hooks/useNotification";
-import NotificationBox from "../notification-box/NotificationBox";
+import { useBooks } from "../../../../hooks/useBooks";
+import useNotification from "../../../../hooks/useNotification";
+import NotificationBox from "../../notification-box/NotificationBox";
+import { useConfirm } from "../../../../hooks/useConfirm";
+
 
 interface DeleteBookModalProps {
     showModal: boolean;
@@ -19,6 +21,7 @@ const DeleteBookModal: React.FC<DeleteBookModalProps> = ({ showModal, toggleModa
     const [bookSelectionValidation, setBookSelectionValidation] = useState<boolean>(true);
 
     const { visible, mainText, subText, showNotification } = useNotification();
+    const { confirm, ConfirmationDialog } = useConfirm();
 
     const handleBookSelection = (title: string) => {
         const result = books!.find(b => (b.title === title));
@@ -32,6 +35,15 @@ const DeleteBookModal: React.FC<DeleteBookModalProps> = ({ showModal, toggleModa
     const handleDelete = async () => {
         if (!bookSelectionValidation) return
 
+        toggleModal();
+
+        const bookTitle = books!.find(b => b.id === bookToDeleteId)!.title;
+        
+        const confirmResult = await confirm("Confirm Delete",
+            `Do you really want to delete "${bookTitle}"?`);
+        
+        if (!confirmResult) return;
+
         const isBookDeleted = await deleteBook(bookToDeleteId!);
 
         if (!isBookDeleted) showNotification("Failed to delete book", "Please try again later", 5000);
@@ -42,6 +54,7 @@ const DeleteBookModal: React.FC<DeleteBookModalProps> = ({ showModal, toggleModa
     return (
         <>
             <NotificationBox visible={visible} mainText={mainText} subText={subText} />
+            <ConfirmationDialog />
             <Modal show={showModal} onHide={toggleModal}>
                 <Modal.Header closeButton>
                     <span className="h1 m-0">Delete Book</span>
