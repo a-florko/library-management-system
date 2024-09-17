@@ -22,34 +22,34 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                         <Dropdown.Toggle className={`${styles['dropdown-toggle']} text-white`} variant="">
                             <span className="h3">Signed in as: {fullName}</span>
                         </Dropdown.Toggle>
-                        <Dropdown.Menu className={`${styles['show']}`}>
+                        <Dropdown.Menu className="w-100">
                             <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={logOut}>
                                 Log Out
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Navbar.Brand>
-                <Navbar.Toggle className="bg-white me-3" />
+                <Navbar.Toggle className="bg-white me-4" />
                 <Navbar.Collapse className={`justify-content-end pe-4 ms-3 ${styles['navbar-collapsed']}`}>
-                    <Nav className="justify-content-end">
-                        <div className="mt-1 me-2 w-100">
+                    <Nav className="justify-content-end w-100">
+                        <div className={`mt-1 me-2 ${styles['search-field-container']}`}>
                             <SearchBookWithLink />
                         </div>
                         <Dropdown>
                             <Dropdown.Toggle className={`${styles['dropdown-toggle']} p-2 text-white`} variant="">
                                 <span className="h4">Manage Books</span>
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className='w-100'>
-                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleAddBookModal}>
+                            <Dropdown.Menu className={styles['show']}>
+                                <Dropdown.Item className='h5 mb-1' onClick={toggleAddBookModal}>
                                     Add Book
                                 </Dropdown.Item>
-                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleIssueBookModal}>
+                                <Dropdown.Item className='h5 mb-1' onClick={toggleIssueBookModal}>
                                     Issue Book
                                 </Dropdown.Item>
-                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleReturnBookModal}>
+                                <Dropdown.Item className='h5 mb-1' onClick={toggleReturnBookModal}>
                                     Return Book
                                 </Dropdown.Item>
-                                <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleDeleteBookModal}>
+                                <Dropdown.Item className='h5 mb-1' onClick={toggleDeleteBookModal}>
                                     Delete Book
                                 </Dropdown.Item>
                             </Dropdown.Menu>

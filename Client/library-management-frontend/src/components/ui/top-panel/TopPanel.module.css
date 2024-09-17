@@ -21,6 +21,14 @@
     border-color: rgb(164, 164, 164) ;
 }
 
+.search-field-container {
+    width: 280px;
+}
+
+.show {
+    width: 100%;
+}
+
 @media all and (max-width: 991px) {
     .navbar-collapsed {
         margin-top: 0.25rem
@@ -35,7 +43,7 @@
     }
 
     .show {
-        width: 36.5%;
+        width: 28%;
         position: absolute !important;
     }
 }

@@ -20,3 +20,21 @@ body {
 ol.breadcrumb {
   margin-bottom: 0px;
 }
+
+.rbt-input.focus {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.dropdown-item {
+  background-color: transparent;
+  transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+  border: none;
+}
+
+.dropdown-item:active,
+.dropdown-item:focus,
+.dropdown-item:hover {
+  background-color: rgb(158, 158, 158) !important;
+  border-color: rgb(85, 83, 83) !important;
+}

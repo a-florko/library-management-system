@@ -21,6 +21,11 @@ const SearchBookWithLink = () => {
             }
             options={books!.map(book => book.title)}
             placeholder="Find Book"
+            inputProps={{
+                style: {
+                    'fontSize': '1.1rem',
+                  }
+            }}
         />
     )
 }
