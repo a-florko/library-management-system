@@ -25,10 +25,10 @@ const BookList: React.FC = () => {
     return (
         <Container className="px-5 pt-3">
             <Dropdown className="text-center">
-                <Dropdown.Toggle className={`${styles['dropdown-toggle']} mb-3 ps-3`} variant="">
-                    <span className="h1 text-dark">{booksTypes.find(bt => bt.type === booksTypeToShow)?.label}</span>
+                <Dropdown.Toggle className={`${styles['dropdown-toggle']} mb-3`} variant="">
+                    <span className="h1 text-dark px-auto">{booksTypes.find(bt => bt.type === booksTypeToShow)?.label}</span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu className="pb-0">
+                <Dropdown.Menu className={`pb-0 ${styles['dropdown-menu']}`}>
                     {booksTypes
                         .filter(bt => bt.type !== booksTypeToShow)
                         .map(bt => (

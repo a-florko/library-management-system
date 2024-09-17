@@ -21,3 +21,8 @@
 .dropdown-toggle:focus {
     border-radius: 25px;
 }
+
+.dropdown-toggle, .dropdown-menu {
+    width: 100%;
+    max-width: 315px;
+}

@@ -39,7 +39,7 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                             <Dropdown.Toggle className={`${styles['dropdown-toggle']} p-2 text-white`} variant="">
                                 <span className="h4">Manage Books</span>
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className={styles['show']}>
+                            <Dropdown.Menu className='w-100'>
                                 <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={toggleAddBookModal}>
                                     Add Book
                                 </Dropdown.Item>
