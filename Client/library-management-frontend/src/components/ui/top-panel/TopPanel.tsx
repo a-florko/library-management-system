@@ -19,11 +19,11 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
             <Container>
                 <Navbar.Brand >
                     <Dropdown className="ms-2">
-                        <Dropdown.Toggle className={`${styles['dropdown-toggle']} text-white`} variant="">
+                        <Dropdown.Toggle className='dropdown-toggle text-white' variant="">
                             <span className="h3">Signed in as: {fullName}</span>
                         </Dropdown.Toggle>
                         <Dropdown.Menu className="w-100">
-                            <Dropdown.Item className={`h5 mb-1 ${styles['dropdown-item']}`} onClick={logOut}>
+                            <Dropdown.Item className='h5 mb-1 dropdown-item' onClick={logOut}>
                                 Log Out
                             </Dropdown.Item>
                         </Dropdown.Menu>
@@ -36,7 +36,7 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                             <SearchBookWithLink />
                         </div>
                         <Dropdown>
-                            <Dropdown.Toggle className={`${styles['dropdown-toggle']} p-2 text-white`} variant="">
+                            <Dropdown.Toggle className="dropdown-toggle p-2 text-white" variant="">
                                 <span className="h4">Manage Books</span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className={styles['show']}>

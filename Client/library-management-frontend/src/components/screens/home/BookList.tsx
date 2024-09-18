@@ -25,7 +25,7 @@ const BookList: React.FC = () => {
     return (
         <Container className="px-5 pt-3">
             <Dropdown className="text-center">
-                <Dropdown.Toggle className={`${styles['dropdown-toggle']} mb-3`} variant="">
+                <Dropdown.Toggle className={`${styles['book-list-dropdown-toggle']} mb-3`} variant="">
                     <span className="h1 text-dark px-auto">{booksTypes.find(bt => bt.type === booksTypeToShow)?.label}</span>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className={`pb-0 ${styles['dropdown-menu']}`}>

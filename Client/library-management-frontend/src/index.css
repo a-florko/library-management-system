@@ -7,10 +7,23 @@ body {
   cursor: pointer;
 }
 
+.navbar-item,
+.dropdown-toggle,
+.dropdown-item,
+.submit-button {
+  transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out !important;
+}
+
+.navbar-item,
+.dropdown-toggle,
+.dropdown-item {
+  background-color: transparent;
+  border: none;
+}
+
 .submit-button {
   border: #d3d3d3 !important;
   background-color: #313031e7 !important;
-  transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out !important;
 }
 
 .submit-button:hover {
@@ -22,19 +35,24 @@ ol.breadcrumb {
 }
 
 .rbt-input.focus {
-  border-color: transparent !important;
+  border-color: rgb(222, 226, 230) !important;
   box-shadow: none !important;
 }
 
-.dropdown-item {
-  background-color: transparent;
-  transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
-  border: none;
-}
-
+.navbar-item:hover,
+.dropdown-toggle:active,
+.dropdown-toggle:hover,
+.dropdown-toggle:focus,
 .dropdown-item:active,
 .dropdown-item:focus,
 .dropdown-item:hover {
-  background-color: rgb(158, 158, 158) !important;
+  background-color: rgb(116, 113, 113) !important;
   border-color: rgb(85, 83, 83) !important;
+}
+
+.navbar-item:hover,
+.dropdown-toggle:active,
+.dropdown-toggle:hover,
+.dropdown-toggle:focus {
+    border-radius: 15px !important;
 }

@@ -1,4 +1,4 @@
-.dropdown-toggle {
+.book-list-dropdown-toggle {
     background-color: transparent;
     transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out;
     background-color: rgb(238, 220, 220) !important;
@@ -6,9 +6,9 @@
     border-radius: 10px;
 }
 
-.dropdown-toggle:active,
-.dropdown-toggle:hover,
-.dropdown-toggle:focus,
+.book-list-dropdown-toggle:active,
+.book-list-dropdown-toggle:hover,
+.book-list-dropdown-toggle:focus,
 .dropdown-item:hover,
 .dropdown-item:active,
 .dropdown-item:focus {
@@ -16,13 +16,7 @@
     border-color: rgb(238, 209, 209) !important;
 }
 
-.dropdown-toggle:active,
-.dropdown-toggle:hover,
-.dropdown-toggle:focus {
-    border-radius: 25px;
-}
-
-.dropdown-toggle, .dropdown-menu {
+.book-list-dropdown-toggle, .dropdown-menu {
     width: 100%;
     max-width: 315px;
 }
