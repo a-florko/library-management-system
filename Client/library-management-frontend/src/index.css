@@ -38,8 +38,6 @@ ol.breadcrumb {
 }
 
 .dropdown-toggle,
-.dropdown-toggle:hover,
-.dropdown-toggle:focus,
 .dropdown-item:active,
 .dropdown-item:focus {
   background-color: rgb(80, 80, 80) !important;
@@ -50,8 +48,6 @@ ol.breadcrumb {
   background-color: rgb(194, 192, 192) !important;
 }
 
-.dropdown-toggle,
-.dropdown-toggle:hover,
-.dropdown-toggle:focus {
+.dropdown-toggle {
   border-radius: 10px !important;
 }
