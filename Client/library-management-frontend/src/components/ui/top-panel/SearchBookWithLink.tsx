@@ -3,7 +3,11 @@ import { useBooks } from "../../../hooks/useBooks";
 import { Typeahead } from "react-bootstrap-typeahead";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
-const SearchBookWithLink = () => {
+interface SearchBookWithLinkProps {
+    className?: string
+}
+
+const SearchBookWithLink:React.FC<SearchBookWithLinkProps> =  ({ className }) => {
     const navigate = useNavigate();
     const { books } = useBooks();
 
@@ -15,6 +19,7 @@ const SearchBookWithLink = () => {
     return (
         <Typeahead
             id="find-book"
+            className={className}
             onChange={(selected) => {
                 handleSelection(String(selected))
             }

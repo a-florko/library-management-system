@@ -1,8 +1,7 @@
 import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import styles from "./TopPanel.module.css";
-import { useAuth } from "../../../hooks/useAuth";
 import SearchBookWithLink from "./SearchBookWithLink";
-import AccountDropdown from "../account-dropdown/AccountDropdown";
+import AccountDropdown from "../AccountDropdown";
 
 interface TopPanelProps {
     toggleAddBookModal: () => void;
@@ -15,19 +14,19 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                                              toggleReturnBookModal, toggleDeleteBookModal }) => {
 
     return (
-        <Navbar expand="lg" bg="dark" data-bs-theme="light" className="">
+        <Navbar expand="lg" bg="dark" data-bs-theme="light">
             <Container>
-                <Navbar.Brand className="ps-4">
+                <Navbar.Brand>
                     <AccountDropdown />
                 </Navbar.Brand>
                 <Navbar.Toggle className="bg-white me-4" />
-                <Navbar.Collapse className={`justify-content-end pe-4 ms-3 ${styles['navbar-collapsed']}`}>
+                <Navbar.Collapse className={styles['navbar-collapsed']}>
                     <Nav className="justify-content-end w-100">
-                        <div className={`mt-1 me-2 ${styles['search-field-container']}`}>
-                            <SearchBookWithLink />
+                        <div className={`me-3 ${styles['search-field-container']}`}>
+                            <SearchBookWithLink className="h-100"/>
                         </div>
                         <Dropdown>
-                            <Dropdown.Toggle className="dropdown-toggle p-2 text-white" variant="">
+                            <Dropdown.Toggle className="dropdown-toggle text-white" variant="">
                                 <span className="h4">Manage Books</span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className={styles['show']}>
