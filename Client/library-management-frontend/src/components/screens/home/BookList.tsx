@@ -23,7 +23,7 @@ const BookList: React.FC = () => {
     }
 
     return (
-        <Container className="px-5 pt-3">
+        <Container className="px-4 mt-3">
             <Dropdown className="text-center">
                 <Dropdown.Toggle className={`${styles['book-list-dropdown-toggle']} mb-3`} variant="">
                     <span className="h1 text-dark px-auto">{booksTypes.find(bt => bt.type === booksTypeToShow)?.label}</span>
@@ -44,9 +44,9 @@ const BookList: React.FC = () => {
             </Dropdown>
             {booksTypeToShow === 'all' && (
                 books!.length > 0 ? (
-                    books!.map(book => (
-                        <Row className="mb-3" key={book.id}>
-                            <Col className="col-12 border rounded bg-light h3 py-2 ps-3 m-0 text-center">
+                    books!.map((book, index) => (
+                        <Row className={index === books!.length - 1 ? "" : "pb-3"} key={book.id}>
+                            <Col className="col-12 border rounded bg-light h3 py-2 m-0 text-center">
                                 <Link to={`/books/${book.id}`}>{book.title}</Link> by {book.author}
                             </Col>
                         </Row>
