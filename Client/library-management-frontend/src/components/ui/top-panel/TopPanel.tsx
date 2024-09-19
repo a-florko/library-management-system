@@ -2,6 +2,7 @@ import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import styles from "./TopPanel.module.css";
 import { useAuth } from "../../../hooks/useAuth";
 import SearchBookWithLink from "./SearchBookWithLink";
+import AccountDropdown from "../account-dropdown/AccountDropdown";
 
 interface TopPanelProps {
     toggleAddBookModal: () => void;
@@ -11,23 +12,13 @@ interface TopPanelProps {
 }
 
 const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBookModal,
-    toggleReturnBookModal, toggleDeleteBookModal }) => {
-    const { fullName, logOut } = useAuth();
+                                             toggleReturnBookModal, toggleDeleteBookModal }) => {
 
     return (
         <Navbar expand="lg" bg="dark" data-bs-theme="light" className="">
             <Container>
-                <Navbar.Brand >
-                    <Dropdown className="ms-2">
-                        <Dropdown.Toggle className='dropdown-toggle text-white' variant="">
-                            <span className="h3">Signed in as: {fullName}</span>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className="w-100">
-                            <Dropdown.Item className='h5 mb-1 dropdown-item' onClick={logOut}>
-                                Log Out
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                <Navbar.Brand className="ps-4">
+                    <AccountDropdown />
                 </Navbar.Brand>
                 <Navbar.Toggle className="bg-white me-4" />
                 <Navbar.Collapse className={`justify-content-end pe-4 ms-3 ${styles['navbar-collapsed']}`}>
