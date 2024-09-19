@@ -7,8 +7,12 @@ import { BookService } from "../../../services/book.service";
 import { useServerState } from "../../../context/SeverStateContext";
 import ServerDown from "../../ui/ServerDown";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import TopPanelContainer from "../../ui/top-panel/TopPanelContainer";
+import { BooksProvider } from "../../../context/BooksContext";
+import { useBooks } from "../../../hooks/useBooks";
 
 const BookDetails: React.FC = () => {
+    const { books } = useBooks();
     const { id } = useParams<{ id: string }>();
     const [book, setBook] = useState<Book | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -25,11 +29,11 @@ const BookDetails: React.FC = () => {
             setLoading(false);
         };
         fetchBook();
-    }, [serverDown, id]);
+    }, [serverDown, setServerDown, id]);
 
-    if (serverDown) return <ServerDown />
+    if (serverDown) return <ServerDown />;
 
-    if (loading) return <LoadingSpinner />
+    if (!books || loading) return <LoadingSpinner />;
 
     if (!book) {
         return (
@@ -45,48 +49,53 @@ const BookDetails: React.FC = () => {
                 </h1>
             </Container>
         );
-    }
+    };
 
     return (
-        <Container className="vh-100 d-flex align-content-center flex-column justify-content-center flex-wrap container-w">
-            <Breadcrumb className="border rounded bg-white h3 p-2">
-                <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }} className="">
-                    Home
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active className="text-dark">Book Details</Breadcrumb.Item>
-            </Breadcrumb>
-            <Card className="p-3 pb-0">
-                <Card.Body>
-                    <CardTitle className="">
-                        <p className="h1 text-center">«{book.title}»</p>
-                    </CardTitle>
-                    <CardText className="h4 pb-2 text-center">
-                        by {book.author}
-                    </CardText>
-                    {book.overview.length > 0 && (
+        <div className="vh-100 position-relative">
+            <TopPanelContainer />
+            <Container className="book-details-container-align">
+                <Breadcrumb className="border rounded bg-white h3 p-2 ps-3">
+                    <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
+                        Home
+                    </Breadcrumb.Item>
+                    <Breadcrumb.Item active className="text-dark">
+                        «{book.title}» by {book.author}
+                    </Breadcrumb.Item>
+                </Breadcrumb>
+                <Card className="ps-1">
+                    <Card.Body>
+                        {book.overview.length > 0 && (
+                            <CardText>
+                                <span className="h3">Description: </span>
+                                <span className="h5">{book.overview}</span>
+                            </CardText>
+                        )}
                         <CardText>
-                            <span className="fw-bold">Description:</span> {book.overview}
+                            <span className="h3">Language(s): </span>
+                            <span className="h4">{book.language}</span>
                         </CardText>
-                    )}
-                    <CardText>
-                        <span className="fw-bold">Language(s):</span> {book.language}
-                    </CardText>
-                    <CardText>
-                        <span className="fw-bold">Copies In Stock:</span> {book.copiesInStock}
-                    </CardText>
-                    <CardText>
-                        <span className="fw-bold">Total Copies:</span> {book.totalCopies}
-                    </CardText>
-                </Card.Body>
-            </Card>
-        </Container>
+                        <CardText>
+                            <span className="h3">Copies In Stock: </span>
+                            <span className="h4">{book.copiesInStock}</span>
+                        </CardText>
+                        <CardText>
+                            <span className="h3">Total Copies: </span>
+                            <span className="h4">{book.totalCopies}</span>
+                        </CardText>
+                    </Card.Body>
+                </Card>
+            </Container>
+        </div>
     )
-}
+};
 
 const BookDetailsWrapper: React.FC = () => {
     return (
-        <BookDetails />
-    )
-}
+        <BooksProvider>
+            <BookDetails />
+        </BooksProvider>
+    );
+};
 
 export default BookDetailsWrapper;

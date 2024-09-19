@@ -7,14 +7,12 @@ body {
   cursor: pointer;
 }
 
-.navbar-item,
 .dropdown-toggle,
 .dropdown-item,
 .submit-button {
   transition: background-color 0.3s ease-in-out, border-radius 0.3s ease-in-out !important;
 }
 
-.navbar-item,
 .dropdown-toggle,
 .dropdown-item {
   background-color: transparent;
@@ -39,20 +37,21 @@ ol.breadcrumb {
   box-shadow: none !important;
 }
 
-.navbar-item:hover,
-.dropdown-toggle:active,
+.dropdown-toggle,
 .dropdown-toggle:hover,
 .dropdown-toggle:focus,
 .dropdown-item:active,
-.dropdown-item:focus,
-.dropdown-item:hover {
-  background-color: rgb(116, 113, 113) !important;
+.dropdown-item:focus {
+  background-color: rgb(80, 80, 80) !important;
   border-color: rgb(85, 83, 83) !important;
 }
 
-.navbar-item:hover,
-.dropdown-toggle:active,
+.dropdown-item:hover {
+  background-color: rgb(194, 192, 192) !important;
+}
+
+.dropdown-toggle,
 .dropdown-toggle:hover,
 .dropdown-toggle:focus {
-    border-radius: 15px !important;
+  border-radius: 10px !important;
 }

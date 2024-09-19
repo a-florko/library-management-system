@@ -1,33 +1,4 @@
-.container-w {
-    max-width: calc(100% - 70vw) !important;
-}
-
-@media screen and (min-width: 1201px) and (max-width: 1400px) {
-    .container-w {
-        max-width: 35% !important;
-    }
-}
-
-@media screen and (min-width: 993px) and (max-width: 1200px) {
-    .container-w {
-        max-width: 45% !important;
-    }
-}
-
-@media screen and (min-width: 769px) and (max-width: 992px) {
-    .container-w {
-        max-width: 55% !important;
-    }
-}
-
-@media screen and (min-width: 631px) and (max-width: 768px) {
-    .container-w {
-        max-width: 65% !important;
-    }
-}
-
-@media screen and (max-width: 630px) {
-    .container-w {
-        max-width: 80% !important;
-    }
-}
+.book-details-container-align {
+    position: relative;
+    top: 10%;
+  }
