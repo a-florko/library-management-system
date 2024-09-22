@@ -15,6 +15,7 @@ interface BooksContextProps {
     loadIssuedBooks: () => Promise<void>;
     loadOverdueIssuedBooks: () => Promise<void>;
     deleteBook: (id: number) => Promise<boolean>;
+    calculateOverdue: (issuedBookReturnDto: IssuedBookDto) => number | null;
 }
 
 export const BooksContext = createContext<BooksContextProps | undefined>(undefined);
@@ -41,7 +42,7 @@ export const BooksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             return true;
         }
         return false;
-    }
+    };
 
     const issueCopy = (bookId: number) => {
         books!.map(b => b.id === bookId ? { ...b, copiesInStock: b.copiesInStock - 1 } : b);
@@ -50,30 +51,44 @@ export const BooksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const returnCopy = async (id: number) => {
         BookService.returnBook(id)
         books!.map(b => b.id === id ? { ...b, copiesInStock: b.copiesInStock + 1 } : b);
-    }
+    };
 
     const loadIssuedBooks = async () => {
         const requestResult = await BookService.getIssuedBooks(setServerDown);
         if (requestResult !== null) setIssuedBooks(requestResult);
-    }
+    };
 
     const loadOverdueIssuedBooks = async () => {
         const requestResult = await BookService.getOverdueIssuedBooks(setServerDown);
         if (requestResult !== null) setOverdueIssuedBooks(requestResult);
-    }
+    };
 
     const deleteBook = async (id: number): Promise<boolean> => {
         const isOperationSuccessful = await BookService.deleteById(id, setServerDown);
         if (!isOperationSuccessful) return false;
         setBooks(prevBooks => prevBooks!.filter(b => b.id !== id));
         return true;
-    }
+    };
+
+    const calculateOverdue = (issuedBookReturnDto: IssuedBookDto): number | null => {
+        const returnBeforeDate = new Date(issuedBookReturnDto.returnBefore);
+        const todayDate = new Date()
+
+        returnBeforeDate.setHours(0, 0, 0, 0);
+        todayDate.setHours(0, 0, 0, 0);
+
+        const diffTime = todayDate.getTime() - returnBeforeDate.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        return diffDays > 0 ? diffDays : null;
+    };
 
     return (
         <BooksContext.Provider value={{
             books, issuedBooks, overdueIssuedBooks,
             addBook, issueCopy, returnCopy,
-            loadIssuedBooks, loadOverdueIssuedBooks, deleteBook
+            loadIssuedBooks, loadOverdueIssuedBooks, deleteBook,
+            calculateOverdue
         }}>
             {children}
         </BooksContext.Provider>

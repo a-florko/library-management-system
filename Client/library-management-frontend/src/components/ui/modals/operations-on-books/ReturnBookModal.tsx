@@ -14,7 +14,7 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
     const [issuedBookToReturn, setIssuedBookToReturn] = useState<IssuedBookDto | undefined>(undefined);
     const [overdueReturnDateBy, setOverdueReturnDateBy] = useState<number | null>(null);
 
-    const { loadIssuedBooks, issuedBooks } = useBooks();
+    const { loadIssuedBooks, issuedBooks, calculateOverdue } = useBooks();
 
     const { returnCopy } = useBooks();
 
@@ -22,15 +22,16 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
         if (showModal) {
             loadIssuedBooks()
         }
-    }, [showModal, loadIssuedBooks])
+    }, [showModal, loadIssuedBooks]);
 
     const handleBookTitleSelection = (selected: string) => {
         const result = issuedBooks?.some(ib => (ib.bookTitle === selected));
         if (result) return setSelectedBookTitle(selected);
 
-        setSelectedBookTitle(undefined)
-        setIssuedBookToReturn(undefined)
-    }
+        setSelectedBookTitle(undefined);
+        setIssuedBookToReturn(undefined);
+    };
+
 
     const handleBorrowerSelection = (borrowerFullName: string) => {
         const result = issuedBooks?.find(ib => ib.bookTitle === selectedBookTitle
@@ -38,32 +39,19 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
 
         if (!result) {
             setOverdueReturnDateBy(null);
-            setIssuedBookToReturn(undefined)
-            return
-        }
+            setIssuedBookToReturn(undefined);
+            return;
+        };
 
         setIssuedBookToReturn(result);
-        setOverdueReturnDateBy(calculateOvedue(result));
-    }
-
-    const calculateOvedue = (issuedBookReturnDto: IssuedBookDto): number | null => {
-        const returnBeforeDate = new Date(issuedBookReturnDto.returnBefore);
-        const todayDate = new Date()
-
-        returnBeforeDate.setHours(0, 0, 0, 0);
-        todayDate.setHours(0, 0, 0, 0);
-
-        const diffTime = todayDate.getTime() - returnBeforeDate.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        return diffDays > 0 ? diffDays : null;
-    }
+        setOverdueReturnDateBy(calculateOverdue(result));
+    };
 
     const handleModalHide = () => {
         setSelectedBookTitle(undefined);
         setIssuedBookToReturn(undefined);
         toggleModal()
-    }
+    };
 
     const handleBookReturn = () => {
         if (issuedBookToReturn) {
@@ -72,7 +60,7 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
         setSelectedBookTitle(undefined);
         setIssuedBookToReturn(undefined);
         toggleModal();
-    }
+    };
 
     return (
         <Modal show={showModal} onHide={handleModalHide}>
@@ -135,7 +123,7 @@ const ReturnBookModal: React.FC<ReturnBookModalProps> = ({ showModal, toggleModa
                 </Button>
             </Modal.Footer>
         </Modal>
-    )
-}
+    );
+};
 
 export default ReturnBookModal;
