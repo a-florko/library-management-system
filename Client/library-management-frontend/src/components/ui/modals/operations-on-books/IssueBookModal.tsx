@@ -28,7 +28,7 @@ const initialIssueBookData: IssueBookData = {
 
 const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, toggleModal }) => {
     const [issueBookData, setIssueBookData] = useState<IssueBookData>(initialIssueBookData);
-    const { visible, mainText, subText, showNotification } = useNotification();
+    const { notification, showNotification } = useNotification();
     const { id } = useAuth();
     const { books, issueCopy } = useBooks();
     const [bookSelectionValidation, setBookSelectionValidation] = useState<boolean>(true);
@@ -114,7 +114,7 @@ const IssueBookModal: React.FC<IssueBookModalProps> = ({ showModal, toggleModal 
     return (
         <>
             <AddNewBorrowerModal showModal={showNewBorrowerModal} toggleModal={toggleAddNewBorrowerModal} />
-            <NotificationBox visible={visible} mainText={mainText} subText={subText} />
+            <NotificationBox isVisible={notification.isVisible} mainText={notification.mainText} subText={notification.subText} />
             <Modal show={showModal} onHide={toggleModal}>
                 <Modal.Header closeButton>
                     <span className="h1 m-0">Issue Book</span>

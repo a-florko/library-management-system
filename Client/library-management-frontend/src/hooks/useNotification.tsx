@@ -1,30 +1,29 @@
 import { useState } from "react";
 
-const useNotification = (): {
-    visible: boolean;
+interface Notification {
+    isVisible: boolean;
     mainText: string;
     subText: string;
+}
+
+const useNotification = (): {
+    notification: Notification
     showNotification: (mainText: string, subText: string, ms: number) => void
 } => {
-    const [visible, setVisible] = useState(false);
-    const [mainText, setMainText] = useState("");
-    const [subText, setsubText] = useState("");
+    const [notification, setNotification] = useState<Notification>({
+        isVisible: false,
+        mainText: "",
+        subText: ""
+    });
 
     const showNotification = (mainText: string, subText: string, ms: number): void => {
-        setVisible(true);
-        setMainText(mainText);
-        setsubText(subText);
+        setNotification({isVisible: true, mainText, subText})
         setTimeout(() => {
-            setVisible(false);
+            setNotification({isVisible: false, mainText: "", subText: ""})
         }, ms);
     };
 
-    return {
-        visible,
-        mainText,
-        subText,
-        showNotification
-    };
+    return {notification, showNotification};
 }
 
 export default useNotification;

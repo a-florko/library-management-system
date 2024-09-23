@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useBooks } from "../../../../hooks/useBooks";
-import { BookData, BookUpdateDto } from "../../../../types/BookProps";
+import { BookUpdateDto } from "../../../../types/BookProps";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useConfirm } from "../../../../hooks/useConfirm";
@@ -17,7 +17,7 @@ const UpdateBookModal: React.FC<UpdateBookModalProps> = ({ showModal, toggleModa
     const { books, updateBook } = useBooks();
 
     const { confirm, ConfirmationDialog } = useConfirm();
-    const { visible, mainText, subText, showNotification } = useNotification();
+    const { notification, showNotification } = useNotification();
 
     const [bookToUpdateId, setBookToUpdateId] = useState<number>();
     const [bookUpdate, setBookUpdate] = useState<BookUpdateDto>({} as BookUpdateDto);
@@ -82,7 +82,7 @@ const UpdateBookModal: React.FC<UpdateBookModalProps> = ({ showModal, toggleModa
 
     return (
         <>
-            <NotificationBox visible={visible} mainText={mainText} subText={subText} />
+            <NotificationBox isVisible={notification.isVisible} mainText={notification.mainText} subText={notification.subText} />
             <ConfirmationDialog />
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>

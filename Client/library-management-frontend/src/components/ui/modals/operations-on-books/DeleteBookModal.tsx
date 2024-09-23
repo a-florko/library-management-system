@@ -20,7 +20,7 @@ const DeleteBookModal: React.FC<DeleteBookModalProps> = ({ showModal, toggleModa
     const [bookToDeleteId, setBookToDeleteId] = useState<number>();
     const [bookSelectionValidation, setBookSelectionValidation] = useState<boolean>(true);
 
-    const { visible, mainText, subText, showNotification } = useNotification();
+    const { notification, showNotification } = useNotification();
     const { confirm, ConfirmationDialog } = useConfirm();
 
     const handleBookSelection = (title: string) => {
@@ -53,7 +53,7 @@ const DeleteBookModal: React.FC<DeleteBookModalProps> = ({ showModal, toggleModa
 
     return (
         <>
-            <NotificationBox visible={visible} mainText={mainText} subText={subText} />
+            <NotificationBox isVisible={notification.isVisible} mainText={notification.mainText} subText={notification.subText} />
             <ConfirmationDialog />
             <Modal show={showModal} onHide={toggleModal}>
                 <Modal.Header closeButton>

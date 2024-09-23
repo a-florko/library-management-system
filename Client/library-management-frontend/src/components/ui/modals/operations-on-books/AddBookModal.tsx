@@ -21,7 +21,7 @@ const initialBookData: BookData = {
 
 const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, toggleModal }) => {
     const [bookToAdd, setBookToAdd] = useState<BookData>(initialBookData);
-    const { visible, mainText, subText, showNotification } = useNotification();
+    const { notification, showNotification } = useNotification();
 
     const { addBook } = useBooks();
 
@@ -40,7 +40,7 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, toggleModal }) =
 
     return (
         <>
-            <NotificationBox visible={visible} mainText={mainText} subText={subText} />
+            <NotificationBox isVisible={notification.isVisible} mainText={notification.mainText} subText={notification.subText} />
             <Modal show={showModal} onHide={toggleModal} className="">
                 <Modal.Header closeButton>
                     <span className="h1 m-0">Add Book</span>
