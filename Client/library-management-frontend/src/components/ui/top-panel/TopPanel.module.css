@@ -8,15 +8,20 @@
 
 @media all and (max-width: 991px) {
     .navbar-collapsed {
-        margin-top: 0.25rem
+        margin-top: 0.25rem;
     }
 
     .log-out {
-        margin-bottom: 0.3rem ;
+        margin-bottom: 0.3rem;
     }
 
     .log-out-span {
-        padding-top: 0.2rem ;
+        padding-top: 0.2rem;
+    }
+
+    .search-field-container {
+        width: calc(15rem + 7vw);
+        margin-bottom: 0.5rem;
     }
 
     .show {

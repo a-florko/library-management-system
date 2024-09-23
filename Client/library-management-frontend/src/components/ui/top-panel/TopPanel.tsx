@@ -21,7 +21,7 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                 <Navbar.Brand>
                     <AccountDropdown />
                 </Navbar.Brand>
-                <Navbar.Toggle className="bg-white me-4" />
+                <Navbar.Toggle className="bg-white"/>
                 <Navbar.Collapse className={styles['navbar-collapsed']}>
                     <Nav className="justify-content-end w-100">
                         <div className={`me-3 ${styles['search-field-container']}`}>
