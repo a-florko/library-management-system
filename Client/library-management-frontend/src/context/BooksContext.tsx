@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Book, BookData } from "../types/BookProps";
+import { Book, BookData, BookUpdateDto } from "../types/BookProps";
 import { useServerState } from "./SeverStateContext";
 import { BookService } from "../services/book.service";
 import { IssuedBookDto } from "../types/IssueBookProps";
@@ -16,6 +16,7 @@ interface BooksContextProps {
     loadOverdueIssuedBooks: () => Promise<void>;
     deleteBook: (id: number) => Promise<boolean>;
     calculateOverdue: (issuedBookReturnDto: IssuedBookDto) => number | null;
+    updateBook: (bookId: number, newBookData: BookUpdateDto) => Promise<boolean>;
 }
 
 export const BooksContext = createContext<BooksContextProps | undefined>(undefined);
@@ -83,12 +84,21 @@ export const BooksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return diffDays > 0 ? diffDays : null;
     };
 
+    const updateBook = async (bookId: number, newBookData: BookUpdateDto): Promise<boolean> => {
+        const updatedBook = await BookService.update(bookId, newBookData, setServerDown);
+        if (updatedBook) {
+            setBooks(prevBooks => prevBooks!.map(b => b.id === bookId ? updatedBook : b));
+            return true;
+        }
+        return false;
+    };
+
     return (
         <BooksContext.Provider value={{
             books, issuedBooks, overdueIssuedBooks,
             addBook, issueCopy, returnCopy,
             loadIssuedBooks, loadOverdueIssuedBooks, deleteBook,
-            calculateOverdue
+            calculateOverdue, updateBook
         }}>
             {children}
         </BooksContext.Provider>

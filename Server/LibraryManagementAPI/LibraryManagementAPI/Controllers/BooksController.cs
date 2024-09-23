@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using LibraryManagementAPI.Data;
+﻿using LibraryManagementAPI.Data;
 using LibraryManagementAPI.Models;
 using LibraryManagementAPI.Services.Contracts;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementAPI.Controllers
 {
     [Route("api/books")]
     [ApiController]
-    public class BooksController(LibraryDbContext context, ILibrarianService librarianService, IBorrowerService borrowerService) : ControllerBase
+    public class BooksController(LibraryDbContext context,
+                                 ILibrarianService librarianService,
+                                 IBorrowerService borrowerService) : ControllerBase
     {
         private readonly ILibrarianService _librarianService = librarianService;
         private readonly IBorrowerService _borrowerService = borrowerService;
@@ -29,7 +31,6 @@ namespace LibraryManagementAPI.Controllers
             {
                 return NotFound();
             }
-            
             return book;
         }
 
@@ -55,7 +56,7 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpGet("issued/overdue")]
-        public async Task<ActionResult<IEnumerable<OverdueIssuedBook>>> GetOverdueIssuedBooks() 
+        public async Task<ActionResult<IEnumerable<OverdueIssuedBook>>> GetOverdueIssuedBooks()
         {
             DateOnly todayDate = DateOnly.FromDateTime(DateTime.Today);
 
@@ -79,14 +80,24 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        public async Task<IActionResult> PutBook(int id, BookUpdateDto bookUpdateDto)
         {
-            if (id != book.Id)
+            Book? bookToUpdate = await _context.Books.FindAsync(id);
+
+            if (bookToUpdate == null) return NotFound();
+
+            if (bookUpdateDto.CopiesInStock > bookUpdateDto.TotalCopies)
             {
-                return BadRequest();
+                return BadRequest("The number of copies in stock cannot be greater than the total number of copies");
             }
 
-            _context.Entry(book).State = EntityState.Modified;
+            bookToUpdate.Author = bookUpdateDto.Author;
+            bookToUpdate.Overview = bookUpdateDto.Overview;
+            bookToUpdate.Language = bookUpdateDto.Language;
+            bookToUpdate.CopiesInStock = bookUpdateDto.CopiesInStock;
+            bookToUpdate.TotalCopies = bookUpdateDto.TotalCopies;
+
+            _context.Entry(bookToUpdate).State = EntityState.Modified;
 
             try
             {
@@ -104,7 +115,7 @@ namespace LibraryManagementAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(bookToUpdate);
         }
 
         [HttpPost]
@@ -126,12 +137,12 @@ namespace LibraryManagementAPI.Controllers
 
             IssuedBook issuedBook = new()
             {
-               BookId = issueBookDto.BookId,
-               BorrowerId = issueBookDto.BorrowerId,
-               LibrarianId = issueBookDto.IssuedById,
-               IssueDate = issueBookDto.IssueDate,
-               ReturnBefore = issueBookDto.ReturnBefore,
-               Notes = issueBookDto.Notes,
+                BookId = issueBookDto.BookId,
+                BorrowerId = issueBookDto.BorrowerId,
+                LibrarianId = issueBookDto.IssuedById,
+                IssueDate = issueBookDto.IssueDate,
+                ReturnBefore = issueBookDto.ReturnBefore,
+                Notes = issueBookDto.Notes,
             };
 
             _context.IssuedBooks.Add(issuedBook);
@@ -162,7 +173,6 @@ namespace LibraryManagementAPI.Controllers
 
             book.CopiesInStock += 1;
 
-            await _context.SaveChangesAsync();
             return Ok();
         }
 

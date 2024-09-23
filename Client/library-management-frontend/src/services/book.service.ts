@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Book, BookData } from "../types/BookProps";
+import { Book, BookData, BookUpdateDto } from "../types/BookProps";
 import { IssueBookData, IssuedBookDto } from "../types/IssueBookProps";
 import { OverdueIssuedBooks } from "../types/OverdueIssuedBookProps";
 
@@ -100,4 +100,19 @@ export const BookService = {
             return false;
         };
     },
+
+    async update(id: number, bookData: BookUpdateDto, setServerDown: (error: boolean) => void): Promise<Book | null> {
+        try {
+            const response = await axios.put(`${API_URL}/${id}`, bookData);
+            console.log(response.data);
+            return response.data;
+        } catch (error: any) {
+            console.log(error);
+            if (error.code === "ERR_NETWORK") {
+                setServerDown(true);
+            }
+            console.error('Error updating book:', error);
+            return null;
+        };
+    }
 }

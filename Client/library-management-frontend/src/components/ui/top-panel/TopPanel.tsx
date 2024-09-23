@@ -8,10 +8,12 @@ interface TopPanelProps {
     toggleIssueBookModal: () => void;
     toggleReturnBookModal: () => void;
     toggleDeleteBookModal: () => void;
+    toggleUpdateBookModal: () => void;
 }
 
 const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBookModal,
-                                             toggleReturnBookModal, toggleDeleteBookModal }) => {
+                                             toggleReturnBookModal, toggleDeleteBookModal,
+                                             toggleUpdateBookModal }) => {
 
     return (
         <Navbar expand="lg" bg="dark" data-bs-theme="light">
@@ -41,6 +43,9 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                                 </Dropdown.Item>
                                 <Dropdown.Item className='h5 mb-1' onClick={toggleDeleteBookModal}>
                                     Delete Book
+                                </Dropdown.Item>
+                                <Dropdown.Item className='h5 mb-1' onClick={toggleUpdateBookModal}>
+                                    Update Book
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>

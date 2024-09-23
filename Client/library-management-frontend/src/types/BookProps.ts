@@ -9,3 +9,11 @@ export interface Book {
 }
 
 export interface BookData extends Omit<Book, 'id'> {}
+
+export interface BookUpdateDto {
+    author: string,
+    overview: string,
+    language: string,
+    copiesInStock: number,
+    totalCopies: number,
+}
