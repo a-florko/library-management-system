@@ -104,7 +104,6 @@ export const BookService = {
     async update(id: number, bookData: BookUpdateDto, setServerDown: (error: boolean) => void): Promise<Book | null> {
         try {
             const response = await axios.put(`${API_URL}/${id}`, bookData);
-            console.log(response.data);
             return response.data;
         } catch (error: any) {
             console.log(error);

@@ -93,7 +93,7 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, toggleModal }) =
                             </Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-4">
-                            <Form.Label className="h6">Сopies In Stock</Form.Label>
+                            <Form.Label className="h5 ms-1">Сopies In Stock</Form.Label>
                             <Form.Control
                                 type="number"
                                 min={0}
@@ -106,7 +106,7 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ showModal, toggleModal }) =
                             </Form.Control>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label className="h6">Total Copies</Form.Label>
+                            <Form.Label className="h5 ms-1">Total Copies</Form.Label>
                             <Form.Control type="number"
                                 min={0} placeholder="Total Copies"
                                 name="totalCopies"
