@@ -24,5 +24,22 @@ namespace LibraryManagementAPI.Services.Implementations
         {
             return _context.Borrowers.Any(b => b.Id == id);
         }
+
+        public async Task<List<BorrowerDto>> AvailableBorrowersForBook(int bookId)
+        {
+            var issuedBooks = await _context.IssuedBooks
+                .Where(b => b.BookId == bookId)
+                .ToListAsync();
+
+            var availableBorrowers = await _context.Borrowers
+                .Where(b => !issuedBooks.Any(ib => ib.BorrowerId == b.Id))
+                .Select(b => new BorrowerDto
+                {
+                    Id = b.Id,
+                    FullName = b.FullName
+                }).ToListAsync();
+
+            return availableBorrowers;
+        }
     }
 }

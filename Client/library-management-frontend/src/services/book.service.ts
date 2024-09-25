@@ -73,7 +73,7 @@ export const BookService = {
             if (response.status === 200) return true
             else return false;
         } catch (error: any) {
-            console.error('Error adding book:', error);
+            console.error('Error adding book:', error.message);
             return false;
         };
     },

@@ -41,11 +41,11 @@ const TopPanel: React.FC<TopPanelProps> = ({ toggleAddBookModal, toggleIssueBook
                                 <Dropdown.Item className='h5 mb-1' onClick={toggleReturnBookModal}>
                                     Return Book
                                 </Dropdown.Item>
-                                <Dropdown.Item className='h5 mb-1' onClick={toggleDeleteBookModal}>
-                                    Delete Book
-                                </Dropdown.Item>
                                 <Dropdown.Item className='h5 mb-1' onClick={toggleUpdateBookModal}>
                                     Update Book
+                                </Dropdown.Item>
+                                <Dropdown.Item className='h5 mb-1' onClick={toggleDeleteBookModal}>
+                                    Delete Book
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>

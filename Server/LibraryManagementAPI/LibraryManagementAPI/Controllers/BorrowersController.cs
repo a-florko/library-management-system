@@ -29,6 +29,14 @@ namespace LibraryManagementAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("available-borrowers-for-book/{bookId}")]
+        public async Task<ActionResult<IEnumerable<BorrowerDto>>> GetAvailableBorrowersForBook(int bookId)
+        {
+            List<BorrowerDto> result = await _borrowerService.AvailableBorrowersForBook(bookId);
+            
+            return Ok(result);
+        }
+
         // GET: api/Borrowers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Borrower>> GetBorrower(int id)

@@ -8,21 +8,14 @@ interface NewBorrowerModalProps {
     toggleModal: () => void;
 };
 
-const initialBorrowerData: Borrower = {
-    fullName: '',
-    telephone: '',
-    email: '',
-};
-
 const AddNewBorrowerModal: React.FC<NewBorrowerModalProps> = ({ showModal, toggleModal }) => {
-    const [borrower, setBorrower] = useState<Borrower>(initialBorrowerData);
+    const [borrower, setBorrower] = useState<Borrower>({} as Borrower);
 
     const resetForm = () => {
-        setBorrower(initialBorrowerData);
+        setBorrower({} as Borrower);
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         BorrowerService.create(borrower);
         toggleModal();
         resetForm();
@@ -39,7 +32,7 @@ const AddNewBorrowerModal: React.FC<NewBorrowerModalProps> = ({ showModal, toggl
                 <span className="h1 m-0">Add New Borrower</span>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
+                <Form>
                     <Form.Group className="mb-3">
                         <Form.Control
                             type="text"
@@ -73,14 +66,13 @@ const AddNewBorrowerModal: React.FC<NewBorrowerModalProps> = ({ showModal, toggl
                             required
                         />
                     </Form.Group>
-                    <hr/>
-                    <Form.Group className="d-flex align-items-center justify-content-center">
-                        <Button className="mx-auto" variant="btn btn-outline-dark" size="lg" type="submit">
-                            Submit
-                        </Button>
-                    </Form.Group>
                 </Form>
             </Modal.Body>
+            <Modal.Footer className="d-flex align-items-center justify-content-center">
+                <Button className="mx-auto" variant="btn btn-outline-dark" size="lg" onClick={handleSubmit}>
+                    Submit
+                </Button>
+            </Modal.Footer>
         </Modal>
     );
 };

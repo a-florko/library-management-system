@@ -6,5 +6,7 @@ namespace LibraryManagementAPI.Services.Contracts
     {
         Task<List<BorrowerDto>> GetDtoBorrowers();
         bool ExistById(int id);
+
+        Task<List<BorrowerDto>> AvailableBorrowersForBook(int bookId);
     }
 }

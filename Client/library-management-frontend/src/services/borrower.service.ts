@@ -9,7 +9,17 @@ export const BorrowerService = {
             const response = await axios.get<BorrowerDto[]>(`${API_URL}/get-full-names-with-id`);
             return response.data;
         } catch (error: any) {
-            console.error('Error fetching books:', error);
+            console.error('Error fetching DTOs of borrowers:', error.message);
+            return null;
+        };
+    },
+
+    async getAvailableBorrowersForBook(bookId: number): Promise<Borrower[] | null> {
+        try {
+            const response = await axios.get<Borrower[]>(`${API_URL}/available-borrowers-for-book/${bookId}`);
+            return response.data;
+        } catch (error: any) {
+            console.error('Error fetching available for book borrowers:', error.message);
             return null;
         };
     },

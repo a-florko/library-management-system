@@ -2,7 +2,7 @@ import { useState } from "react";
 import TopPanel from "./TopPanel";
 import AddBookModal from "../modals/operations-on-books/AddBookModal";
 import DeleteBookModal from "../modals/operations-on-books/DeleteBookModal";
-import IssueBookModal from "../modals/operations-on-books/IssueBookModal";
+import IssueBookModal from "../modals/operations-on-books/issue-book-modal/IssueBookModal";
 import ReturnBookModal from "../modals/operations-on-books/ReturnBookModal";
 import UpdateBookModal from "../modals/operations-on-books/UpdateBookModal";
 
