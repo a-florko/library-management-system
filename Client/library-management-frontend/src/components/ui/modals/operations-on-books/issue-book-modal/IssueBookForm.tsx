@@ -4,7 +4,6 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { useBooks } from "../../../../../hooks/useBooks";
 import { IssueBookData } from "../../../../../types/IssueBookProps";
 import { BorrowerSelection } from "./BorrowerSelection";
-import { ModalToShowType } from "./modal-to-show-types.enum";
 
 interface IssueBookFormProps {
     issueBookData: IssueBookData;
@@ -12,7 +11,6 @@ interface IssueBookFormProps {
     toggleAddNewBorrowerModal: () => void;
     setBorrowerId: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
-
 
 export const IssueBookForm: React.FC<IssueBookFormProps> = ({
     issueBookData,

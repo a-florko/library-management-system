@@ -83,7 +83,7 @@ export const BookService = {
             const response = await axios.delete(`${API_URL}/return-book/${id}`);
             return response.status === 200 ? true : false;
         } catch (error: any) {
-            console.error('Error when returning a book:', error.data)
+            console.error('Error when returning a book:', error.message)
             return false;
         };
     },
@@ -106,11 +106,10 @@ export const BookService = {
             const response = await axios.put(`${API_URL}/${id}`, bookData);
             return response.data;
         } catch (error: any) {
-            console.log(error);
             if (error.code === "ERR_NETWORK") {
                 setServerDown(true);
             }
-            console.error('Error updating book:', error);
+            console.error('Error updating book:', error.message);
             return null;
         };
     }

@@ -7,12 +7,10 @@ import useNotification from "../../../../hooks/useNotification";
 import NotificationBox from "../../notification-box/NotificationBox";
 import { useConfirm } from "../../../../hooks/useConfirm";
 
-
 interface DeleteBookModalProps {
     showModal: boolean;
     toggleModal: () => void;
 }
-
 
 const DeleteBookModal: React.FC<DeleteBookModalProps> = ({ showModal, toggleModal }) => {
     const { books, deleteBook } = useBooks();
