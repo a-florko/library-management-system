@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Breadcrumb, Card, CardText, CardTitle, Container } from "react-bootstrap";
+import { Breadcrumb, Card, CardText, Container } from "react-bootstrap";
 import { Book } from "../../../types/BookProps";
 import "./BookDetails.css";
 import { BookService } from "../../../services/book.service";
