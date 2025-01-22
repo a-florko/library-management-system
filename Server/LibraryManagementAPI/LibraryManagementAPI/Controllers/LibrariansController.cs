@@ -16,18 +16,10 @@ namespace LibraryManagementAPI.Controllers
         private readonly PasswordHasher<string> _passwordHasher = new();
 
         [HttpPost("try-to-log-in")]
-        public async Task<IActionResult> TryToLogIn(LogInDto logInDto)
+        public async Task<IActionResult> TryToLogIn(LibrarianLogInDto logInDto)
         {
-            Librarian? librarian = await _context.Librarians.SingleOrDefaultAsync(l => l.Login == logInDto.Login);
+            Librarian? librarian = await _librarianService.TryToLogInAsync(logInDto);
             if (librarian == null) return Unauthorized("Invalid credentials");
-
-            PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(librarian.LastName, librarian.Password, logInDto.Password);
-
-            if (result == PasswordVerificationResult.Failed) return Unauthorized("Invalid credentials");
-            else if (result == PasswordVerificationResult.SuccessRehashNeeded)
-            { 
-                RehashPassword(librarian);
-            }
             return Ok(new { id = librarian.Id , fullName = $"{librarian.FirstName} {librarian.LastName}" });
         }
 
@@ -61,13 +53,11 @@ namespace LibraryManagementAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Librarian>> PostLibrarian(Librarian librarian)
+        public async Task<ActionResult<Librarian>> PostLibrarian(LibrarianRegisterDto librarian)
         {
-            librarian.Password = _passwordHasher.HashPassword(librarian.LastName, librarian.Password);
-            _context.Librarians.Add(librarian);
-            await _context.SaveChangesAsync();
-
-            return Created();
+            bool result = await _librarianService.RegisterAsync(librarian);
+            if (result) return Created();
+            else return BadRequest();
         }
 
         [HttpDelete("{id}")]
@@ -83,13 +73,6 @@ namespace LibraryManagementAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private async void RehashPassword(Librarian librarian)
-        {
-            string newPassword = _passwordHasher.HashPassword(librarian.LastName, librarian.Password);
-            librarian.Password = newPassword;
-            await PutLibrarian(librarian.Id, librarian);
         }
     }
 }

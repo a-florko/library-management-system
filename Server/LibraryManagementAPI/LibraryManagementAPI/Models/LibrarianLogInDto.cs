@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagementAPI.Models
 {
-    public partial class LogInDto
+    public partial class LibrarianLogInDto
     {
         public required string Login { get; set; }
 
