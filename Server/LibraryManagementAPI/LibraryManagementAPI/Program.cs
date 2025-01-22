@@ -15,7 +15,7 @@ internal class Program
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -23,7 +23,6 @@ internal class Program
         builder.Services.AddTransient<IBorrowerService, BorrowerService>();
 
         var app = builder.Build();
-
 
         using (var scope = app.Services.CreateScope())
         {
@@ -34,7 +33,6 @@ internal class Program
             }
         }
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
